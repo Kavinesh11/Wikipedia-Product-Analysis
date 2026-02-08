@@ -1,0 +1,54 @@
+# Wikipedia Health Analysis System Configuration
+
+api:
+  pageviews_endpoint: "https://wikimedia.org/api/rest_v1/metrics/pageviews"
+  editors_endpoint: "https://wikimedia.org/api/rest_v1/metrics/editors"
+  edits_endpoint: "https://wikimedia.org/api/rest_v1/metrics/edits"
+  timeout: 30
+  max_retries: 5
+  backoff_factor: 2.0
+  user_agent: "WikipediaHealthAnalysis/0.1.0"
+
+statistical:
+  significance_level: 0.05
+  confidence_level: 0.95
+  bootstrap_samples: 10000
+  permutation_iterations: 10000
+  numerical_precision: 1.0e-10
+  outlier_threshold: 3.0
+  min_data_points_trend: 90
+  min_data_points_causal: 30
+
+time_series:
+  seasonal_period: 7
+  changepoint_min_size: 30
+  forecast_methods:
+    - arima
+    - prophet
+    - exponential_smoothing
+  prediction_intervals:
+    - 0.50
+    - 0.80
+    - 0.95
+  holdout_percentage: 0.10
+
+causal:
+  pre_period_length: 90
+  post_period_length: 90
+  baseline_window: 90
+  event_post_window: 30
+  event_max_window: 180
+  placebo_iterations: 100
+
+validation:
+  max_missing_percentage: 0.10
+  max_gap_days: 3
+  staleness_threshold_hours: 24
+  data_sources:
+    - pageviews
+    - editors
+    - edits
+  platforms:
+    - desktop
+    - mobile-web
+    - mobile-app
