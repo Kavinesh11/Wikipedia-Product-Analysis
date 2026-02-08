@@ -1,0 +1,124 @@
+# Sample Configuration for Wikipedia Product Health Analysis
+# This configuration demonstrates all available options with recommended values
+
+# API Configuration
+api:
+  # Wikimedia API endpoints
+  pageviews_endpoint: "https://wikimedia.org/api/rest_v1/metrics/pageviews"
+  editors_endpoint: "https://wikimedia.org/api/rest_v1/metrics/editors"
+  edits_endpoint: "https://wikimedia.org/api/rest_v1/metrics/edits"
+  
+  # Request settings
+  timeout: 30  # seconds
+  max_retries: 5
+  backoff_factor: 2.0
+  user_agent: "WikipediaHealthAnalysis/0.1.0"
+
+# Statistical Analysis Configuration
+statistical:
+  # Significance testing
+  significance_level: 0.05  # Alpha level (5%)
+  confidence_level: 0.95    # Confidence level (95%)
+  
+  # Resampling methods
+  bootstrap_samples: 10000
+  permutation_iterations: 10000
+  
+  # Numerical settings
+  numerical_precision: 1.0e-10
+  outlier_threshold: 3.0  # Z-score threshold
+  
+  # Data requirements
+  min_data_points_trend: 90   # Minimum days for trend analysis
+  min_data_points_causal: 30  # Minimum days for causal inference
+
+# Time Series Analysis Configuration
+time_series:
+  # Seasonality
+  seasonal_period: 7  # Weekly seasonality
+  
+  # Changepoint detection
+  changepoint_min_size: 30  # Minimum segment size in days
+  
+  # Forecasting
+  forecast_methods:
+    - arima
+    - prophet
+    - exponential_smoothing
+  
+  # Prediction intervals
+  prediction_intervals:
+    - 0.50  # 50% interval
+    - 0.80  # 80% interval
+    - 0.95  # 95% interval
+  
+  # Validation
+  holdout_percentage: 0.10  # 10% holdout for validation
+
+# Causal Inference Configuration
+causal:
+  # Period lengths (in days)
+  pre_period_length: 90
+  post_period_length: 90
+  baseline_window: 90
+  
+  # Event analysis
+  event_post_window: 30
+  event_max_window: 180
+  
+  # Robustness checks
+  placebo_iterations: 100
+
+# Data Validation Configuration
+validation:
+  # Quality thresholds
+  max_missing_percentage: 0.10  # Maximum 10% missing data
+  max_gap_days: 3               # Maximum gap for interpolation
+  staleness_threshold_hours: 24 # Data freshness requirement
+  
+  # Data sources to validate
+  data_sources:
+    - pageviews
+    - editors
+    - edits
+  
+  # Platforms to analyze
+  platforms:
+    - desktop
+    - mobile-web
+    - mobile-app
+
+# Visualization Configuration (optional)
+visualization:
+  # Plot settings
+  figure_width: 12
+  figure_height: 6
+  dpi: 300
+  
+  # Style
+  style: "seaborn-v0_8-darkgrid"
+  color_palette: "Set2"
+  
+  # Interactive plots
+  enable_interactive: true
+  
+# Logging Configuration (optional)
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/analysis.log"
+
+# Output Configuration (optional)
+output:
+  # Default output directory
+  directory: "output"
+  
+  # Output formats
+  formats:
+    - json
+    - html
+  
+  # Report settings
+  include_plots: true
+  include_raw_data: false
+  compress_results: false
