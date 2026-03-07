@@ -1,1 +1,1 @@
-"""Test suite for Wikipedia Health Analysis System."""
+"""Test Suite for Wikipedia Intelligence System"""
