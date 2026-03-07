@@ -1,0 +1,134 @@
+# Wikipedia Intelligence System Configuration
+
+# Development configuration
+development:
+  api:
+    wikimedia_base_url: "https://wikimedia.org/api/rest_v1"
+    rate_limit: 200  # requests per second
+    timeout: 30
+    max_retries: 3
+  
+  database:
+    # SQLite configuration for testing (no PostgreSQL required)
+    use_sqlite: true
+    sqlite_path: "data/wikipedia_intelligence_dev.db"
+    # PostgreSQL configuration (for production use)
+    postgres_host: "localhost"
+    postgres_port: 5432
+    postgres_db: "wikipedia_intelligence_dev"
+    postgres_user: "dev_user"
+    postgres_password: "dev_password"
+    pool_size: 10
+  
+  cache:
+    redis_host: "localhost"
+    redis_port: 6379
+    redis_db: 0
+    max_connections: 50
+  
+  logging:
+    level: "DEBUG"
+    json_format: true
+    log_file: "logs/app.log"
+  
+  crawler:
+    max_concurrent: 10
+    crawl_delay: 1.0
+    max_depth: 2
+    respect_robots_txt: true
+  
+  analytics:
+    min_training_days: 90
+    forecast_periods: 30
+    hype_threshold: 0.75
+    reputation_alert_threshold: 0.7
+  
+  dashboard:
+    refresh_interval: 300  # seconds
+    cache_ttl: 300
+
+# Staging configuration
+staging:
+  api:
+    wikimedia_base_url: "https://wikimedia.org/api/rest_v1"
+    rate_limit: 200
+    timeout: 30
+    max_retries: 3
+
+  database:
+    postgres_host: "staging-db.example.com"
+    postgres_port: 5432
+    postgres_db: "wikipedia_intelligence_staging"
+    postgres_user: "staging_user"
+    postgres_password: "${POSTGRES_PASSWORD}"  # From environment
+    pool_size: 20
+  
+  cache:
+    redis_host: "staging-redis.example.com"
+    redis_port: 6379
+    redis_db: 0
+    max_connections: 100
+  
+  logging:
+    level: "INFO"
+    json_format: true
+    log_file: "logs/app.log"
+  
+  crawler:
+    max_concurrent: 20
+    crawl_delay: 0.5
+    max_depth: 3
+    respect_robots_txt: true
+  
+  analytics:
+    min_training_days: 90
+    forecast_periods: 30
+    hype_threshold: 0.75
+    reputation_alert_threshold: 0.7
+  
+  dashboard:
+    refresh_interval: 300
+    cache_ttl: 300
+
+# Production configuration
+production:
+  api:
+    wikimedia_base_url: "https://wikimedia.org/api/rest_v1"
+    rate_limit: 200
+    timeout: 30
+    max_retries: 5
+  
+  database:
+    postgres_host: "${POSTGRES_HOST}"
+    postgres_port: 5432
+    postgres_db: "${POSTGRES_DB}"
+    postgres_user: "${POSTGRES_USER}"
+    postgres_password: "${POSTGRES_PASSWORD}"
+    pool_size: 50
+  
+  cache:
+    redis_host: "${REDIS_HOST}"
+    redis_port: 6379
+    redis_db: 0
+    max_connections: 200
+  
+  logging:
+    level: "INFO"
+    json_format: true
+    log_file: "logs/app.log"
+  
+  crawler:
+    max_concurrent: 50
+    crawl_delay: 0.2
+    max_depth: 3
+    respect_robots_txt: true
+  
+  analytics:
+    min_training_days: 90
+    forecast_periods: 30
+    hype_threshold: 0.75
+    reputation_alert_threshold: 0.7
+  
+  dashboard:
+    refresh_interval: 300
+    cache_ttl: 300
