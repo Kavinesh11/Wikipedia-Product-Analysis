@@ -1,107 +1,101 @@
-# Wikipedia Product Health Analysis System
+# Wikipedia Intelligence System
 
-A rigorous, evidence-based analytics platform for evaluating Wikipedia's product health using time-series data from 2015-2025. The system implements formal statistical validation, causal inference methodologies, and multi-source cross-validation for all findings.
-
-## Features
-
-- **Statistical Validation**: Hypothesis testing, significance analysis, confidence intervals, and effect size quantification
-- **Causal Inference**: Interrupted time series, difference-in-differences, event study methodology, and synthetic controls
-- **Time Series Analysis**: Seasonal decomposition, changepoint detection, and multi-method forecasting
-- **Evidence Framework**: Multi-source validation, robustness checks, and sensitivity analysis
-- **Interactive Visualization**: Statistical evidence overlays and publication-quality plots
-
-## Installation
-
-```bash
-pip install -e .
-```
-
-For development:
-
-```bash
-pip install -e ".[dev]"
-```
+A real-time business intelligence platform that transforms Wikipedia data into actionable business insights.
 
 ## Project Structure
 
 ```
-wikipedia_health/
-├── data_acquisition/     # Wikimedia API client and data validation
-├── time_series/          # Temporal analysis and forecasting
-├── statistical_validation/  # Hypothesis testing and significance
-├── causal_inference/     # Causal analysis methodologies
-├── evidence_framework/   # Cross-validation and robustness
-├── visualization/        # Interactive dashboards and plots
-├── models/              # Core data structures
-├── utils/               # Common utilities
-└── config/              # Configuration management
-
-tests/                   # Test suite with property-based tests
+wikipedia-intelligence-system/
+├── src/
+│   ├── data_ingestion/    # Data collectors (Pageviews, Edit History, Crawler)
+│   ├── processing/        # ETL pipelines and data transformation
+│   ├── storage/          # Database models and cache management
+│   ├── analytics/        # ML models and statistical analysis
+│   ├── visualization/    # Dashboard and reporting
+│   └── utils/           # Shared utilities (config, logging)
+├── tests/
+│   ├── unit/            # Unit tests
+│   └── property/        # Property-based tests (Hypothesis)
+├── config/              # Configuration files
+├── data/               # Data storage
+└── docs/               # Documentation
 ```
+
+## Setup
+
+### Prerequisites
+
+- Python 3.11+
+- PostgreSQL 14+
+- Redis 7+
+
+### Installation
+
+1. Clone the repository
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Configure environment:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+5. Initialize database:
+   ```bash
+   alembic upgrade head
+   ```
 
 ## Configuration
 
-Configuration is managed through `config.yaml`. Key parameters:
+Configuration is loaded from:
+1. `config/config.yaml` - Base configuration with profiles
+2. Environment variables (override config file)
+3. `.env` file (loaded automatically)
 
-- **API Settings**: Endpoints, timeouts, retry logic
-- **Statistical Parameters**: Significance levels, confidence intervals, bootstrap samples
-- **Time Series Settings**: Seasonal periods, forecast methods, prediction intervals
-- **Causal Analysis**: Pre/post period lengths, baseline windows
-- **Validation**: Data quality thresholds, platforms, data sources
+Supported profiles: `development`, `staging`, `production`
 
 ## Testing
 
-Run tests:
-
+Run all tests:
 ```bash
 pytest
 ```
 
-Run with coverage:
-
+Run unit tests only:
 ```bash
-pytest --cov=wikipedia_health --cov-report=html
+pytest tests/unit -m unit
 ```
 
-Run property-based tests only:
-
+Run property-based tests:
 ```bash
-pytest -m property
+pytest tests/property -m property
 ```
 
-## Usage
+## Code Quality
 
-```python
-from wikipedia_health.config import load_config
-from wikipedia_health.data_acquisition import WikimediaAPIClient
-
-# Load configuration
-config = load_config()
-
-# Initialize API client
-client = WikimediaAPIClient(config.api)
-
-# Fetch pageview data
-data = client.fetch_pageviews(
-    start_date="2015-01-01",
-    end_date="2025-01-01",
-    platforms=["desktop", "mobile-web", "mobile-app"]
-)
+Format code:
+```bash
+black src tests
 ```
 
-## Requirements
+Lint code:
+```bash
+flake8 src tests
+```
 
-- Python >= 3.9
-- pandas >= 2.0.0
-- numpy >= 1.24.0
-- scipy >= 1.10.0
-- statsmodels >= 0.14.0
-- scikit-learn >= 1.3.0
-- prophet >= 1.1.0
-- pmdarima >= 2.0.0
-- matplotlib >= 3.7.0
-- seaborn >= 0.12.0
-- plotly >= 5.14.0
+Type checking:
+```bash
+mypy src
+```
 
 ## License
 
