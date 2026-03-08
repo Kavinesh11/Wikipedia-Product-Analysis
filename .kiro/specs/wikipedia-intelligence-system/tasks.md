@@ -104,21 +104,21 @@ This implementation plan breaks down the Wikipedia Intelligence System into incr
     - Test request logging
     - _Requirements: 1.6, 12.5, 12.6_
 
-- [ ] 5. Implement Pageviews Collector
-  - [ ] 5.1 Create PageviewsCollector class
+- [-] 5. Implement Pageviews Collector
+  - [x] 5.1 Create PageviewsCollector class
     - Implement fetch_per_article() with bot filtering and device segmentation
     - Implement fetch_top_articles()
     - Implement fetch_aggregate()
     - Add response schema validation
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.7_
   
-  - [ ] 5.2 Write property tests for pageviews collection
+  - [x] 5.2 Write property tests for pageviews collection
     - **Property 1: API Response Schema Validation**
     - **Property 2: Bot Traffic Filtering**
     - **Property 3: Device Segmentation**
     - **Validates: Requirements 1.1, 1.2, 1.3, 1.4, 1.5, 1.7**
   
-  - [ ] 5.3 Write unit tests for pageviews collector
+  - [x] 5.3 Write unit tests for pageviews collector
     - Test with mock API responses
     - Test error handling (404, 5xx, timeout)
     - Test edge cases (empty results, special characters in titles)

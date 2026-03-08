@@ -4,6 +4,7 @@ from .edit_history_scraper import EditHistoryScraper
 from .api_client import WikimediaAPIClient
 from .rate_limiter import RateLimiter
 from .crawl4ai_pipeline import Crawl4AIPipeline, ExtractionConfig, CrawlCheckpoint
+from .pageviews_collector import PageviewsCollector
 
 __all__ = [
     "EditHistoryScraper",
@@ -12,4 +13,5 @@ __all__ = [
     "Crawl4AIPipeline",
     "ExtractionConfig",
     "CrawlCheckpoint",
+    "PageviewsCollector",
 ]
