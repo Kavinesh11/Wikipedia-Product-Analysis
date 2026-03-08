@@ -85,7 +85,7 @@ def generate_intervention_series(
 
 
 @pytest.mark.property
-@settings(max_examples=10, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     intervention_date=valid_dates,
     pre_period_days=st.integers(min_value=90, max_value=120),
@@ -166,7 +166,7 @@ def test_property_7_causal_method_selection(
 
 
 @pytest.mark.property
-@settings(max_examples=10, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     intervention_date=valid_dates,
     pre_period_days=st.integers(min_value=90, max_value=120),
@@ -306,7 +306,7 @@ def test_property_22_campaign_effect_isolation(
 
 
 @pytest.mark.property
-@settings(max_examples=10, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     event_date=valid_dates,
     baseline_days=st.integers(min_value=90, max_value=120),

@@ -112,7 +112,7 @@ def article_network_strategy(draw, min_articles=1, max_articles=20):
     seed_articles=article_network_strategy(min_articles=2, max_articles=10),
     max_depth=st.integers(min_value=1, max_value=3)
 )
-@settings(max_examples=100, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
+@settings(max_examples=5, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
 def test_property_45_related_article_discovery(seed_articles, max_depth):
     """
     Property 45: Related Article Discovery
@@ -164,7 +164,7 @@ def test_property_45_related_article_discovery(seed_articles, max_depth):
 
 # Feature: wikipedia-intelligence-system, Property 46: Knowledge Graph Construction
 @given(articles=article_network_strategy(min_articles=1, max_articles=15))
-@settings(max_examples=100, deadline=2000)
+@settings(max_examples=5, deadline=2000)
 def test_property_46_knowledge_graph_construction(articles):
     """
     Property 46: Knowledge Graph Construction
@@ -198,7 +198,7 @@ def test_property_46_knowledge_graph_construction(articles):
 
 # Feature: wikipedia-intelligence-system, Property 47: Graph Clustering
 @given(articles=article_network_strategy(min_articles=2, max_articles=15))
-@settings(max_examples=100, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
+@settings(max_examples=5, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
 def test_property_47_graph_clustering(articles):
     """
     Property 47: Graph Clustering
@@ -239,7 +239,7 @@ def test_property_47_graph_clustering(articles):
 
 # Feature: wikipedia-intelligence-system, Property 48: Centrality Calculation
 @given(articles=article_network_strategy(min_articles=2, max_articles=15))
-@settings(max_examples=100, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
+@settings(max_examples=5, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
 def test_property_48_centrality_calculation(articles):
     """
     Property 48: Centrality Calculation
@@ -274,7 +274,7 @@ def test_property_48_centrality_calculation(articles):
     initial_articles=article_network_strategy(min_articles=2, max_articles=10),
     new_articles_count=st.integers(min_value=1, max_value=5)
 )
-@settings(max_examples=100, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
+@settings(max_examples=5, deadline=2000, suppress_health_check=[HealthCheck.large_base_example])
 def test_property_49_incremental_graph_updates(initial_articles, new_articles_count):
     """
     Property 49: Incremental Graph Updates

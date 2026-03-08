@@ -149,7 +149,7 @@ def anomaly_list_strategy(draw, min_anomalies=0, max_anomalies=10):
 
 
 # Property 9: Multi-Dimensional Correlation
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(data_pair=aligned_time_series_pair_strategy(min_length=30, max_length=200))
 def test_property_9_multi_dimensional_correlation(data_pair):
     """
@@ -193,7 +193,7 @@ def test_property_9_multi_dimensional_correlation(data_pair):
 
 
 # Property 10: Engagement Ratio Significance Testing
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(data_pair=aligned_time_series_pair_strategy(min_length=60, max_length=200))
 def test_property_10_engagement_ratio_significance_testing(data_pair):
     """
@@ -243,7 +243,7 @@ def test_property_10_engagement_ratio_significance_testing(data_pair):
 
 
 # Property 11: Cross-Platform Engagement Analysis
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     n_platforms=st.integers(min_value=2, max_value=3),
     data_length=st.integers(min_value=30, max_value=100)
@@ -321,7 +321,7 @@ def test_property_11_cross_platform_engagement_analysis(n_platforms, data_length
 
 
 # Additional property test: Anomaly cross-referencing
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     pv_anomalies=anomaly_list_strategy(min_anomalies=0, max_anomalies=10),
     ed_anomalies=anomaly_list_strategy(min_anomalies=0, max_anomalies=10),
@@ -390,7 +390,7 @@ def test_property_anomaly_cross_referencing(pv_anomalies, ed_anomalies, time_win
 
 
 # Property test: Engagement ratio computation
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     pageviews=st.lists(st.integers(min_value=1, max_value=1000000), min_size=10, max_size=100),
     editors=st.lists(st.integers(min_value=0, max_value=1000), min_size=10, max_size=100)

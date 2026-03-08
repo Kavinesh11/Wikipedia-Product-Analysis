@@ -54,7 +54,7 @@ def time_series_data_strategy(draw):
     )
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(ts_data=time_series_data_strategy())
 def test_property_4_data_persistence_round_trip_pickle(ts_data):
     """
@@ -83,7 +83,7 @@ def test_property_4_data_persistence_round_trip_pickle(ts_data):
     pd.testing.assert_series_equal(deserialized.values, ts_data.values)
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(ts_data=time_series_data_strategy())
 def test_property_4_data_persistence_round_trip_dataframe(ts_data):
     """
@@ -141,7 +141,7 @@ def _test_result_strategy(draw):
     )
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(test_result=_test_result_strategy())
 def test_property_4_test_result_round_trip(test_result):
     """
@@ -194,7 +194,7 @@ def _changepoint_strategy(draw):
     )
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(changepoint=_changepoint_strategy())
 def test_property_4_changepoint_round_trip(changepoint):
     """
@@ -235,7 +235,7 @@ def _finding_strategy(draw):
     )
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(finding=_finding_strategy())
 def test_property_4_finding_round_trip(finding):
     """

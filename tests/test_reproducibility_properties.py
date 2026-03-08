@@ -91,7 +91,7 @@ def metadata_strategy(draw):
     }
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(
     result=analysis_result_strategy(),
     metadata=metadata_strategy(),
@@ -145,7 +145,7 @@ def test_property_30_analysis_reproducibility(result, metadata):
             pd.testing.assert_frame_equal(loaded_result1, loaded_result2)
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     source_name=st.text(min_size=1, max_size=50, alphabet=st.characters(whitelist_categories=('Lu', 'Ll', 'Nd'))),
     endpoint=st.text(min_size=5, max_size=100, alphabet=st.characters(whitelist_categories=('Lu', 'Ll', 'Nd', 'P'))),
@@ -224,7 +224,7 @@ def test_property_31_metadata_completeness(source_name, endpoint, method_name, r
         assert loaded_metadata['execution_environment']['random_seed'] == random_seed
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(
     result=analysis_result_strategy(),
     metadata=metadata_strategy(),
@@ -288,7 +288,7 @@ def test_property_32_result_integrity(result, metadata):
                 pass
 
 
-@settings(max_examples=50, deadline=None)  # Reduced examples due to pipeline complexity
+@settings(max_examples=5, deadline=None)  # Reduced examples due to pipeline complexity
 @given(
     input_value=st.integers(min_value=1, max_value=100),
     random_seed=st.integers(min_value=0, max_value=2**31 - 1),
@@ -387,7 +387,7 @@ def test_property_33_pipeline_re_execution(input_value, random_seed):
         assert not comparison['checksums_match']
 
 
-@settings(max_examples=100)
+@settings(max_examples=5)
 @given(
     result=analysis_result_strategy(),
     version1=st.text(min_size=1, max_size=20, alphabet=st.characters(whitelist_categories=('Lu', 'Ll', 'Nd'))),

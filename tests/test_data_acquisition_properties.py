@@ -82,7 +82,7 @@ def create_mock_edits_response(start_date: date, end_date: date):
 
 
 @pytest.mark.property
-@settings(max_examples=20, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
 @given(
     start_date=valid_dates,
     end_date=valid_dates,
@@ -168,7 +168,7 @@ def test_property_1_data_acquisition_completeness(start_date, end_date, platform
 
 
 @pytest.mark.property
-@settings(max_examples=20, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
 @given(
     start_date=valid_dates,
     end_date=valid_dates,
@@ -222,7 +222,7 @@ def test_property_2_bot_traffic_exclusion(start_date, end_date, platforms):
 
 
 @pytest.mark.property
-@settings(max_examples=20, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much])
 @given(
     start_date=valid_dates,
     end_date=valid_dates

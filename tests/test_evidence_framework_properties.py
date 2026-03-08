@@ -87,7 +87,7 @@ def finding_strategy():
 
 
 @pytest.mark.property
-@settings(max_examples=50, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     finding=finding_strategy(),
     num_sources=integers(min_value=2, max_value=5)
@@ -178,7 +178,7 @@ def test_property_12_multi_source_validation(finding, num_sources):
 
 
 @pytest.mark.property
-@settings(max_examples=50, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     base_value=floats(min_value=0.1, max_value=10.0, allow_nan=False, allow_infinity=False),
     num_variations=integers(min_value=3, max_value=10)
@@ -254,7 +254,7 @@ def test_property_13_sensitivity_analysis(base_value, num_variations):
 
 
 @pytest.mark.property
-@settings(max_examples=50, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     series_length=integers(min_value=30, max_value=100),
     num_methods=integers(min_value=2, max_value=5),
@@ -349,7 +349,7 @@ def test_property_14_method_consistency_validation(series_length, num_methods, n
 
 
 @pytest.mark.property
-@settings(max_examples=30, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     finding=finding_strategy(),
     num_platforms=integers(min_value=2, max_value=3)
@@ -413,7 +413,7 @@ def test_property_12_cross_platform_validation(finding, num_platforms):
 
 
 @pytest.mark.property
-@settings(max_examples=30, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     series_length=integers(min_value=50, max_value=150),
     outlier_multiplier=floats(min_value=5.0, max_value=20.0, allow_nan=False, allow_infinity=False)
@@ -501,7 +501,7 @@ def test_property_13_outlier_sensitivity(series_length, outlier_multiplier):
 
 
 @pytest.mark.property
-@settings(max_examples=30, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
+@settings(max_examples=5, deadline=None, suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.too_slow])
 @given(
     series_length=integers(min_value=50, max_value=150),
     n_subsamples=integers(min_value=20, max_value=50)

@@ -1,0 +1,83 @@
+# Staging Environment Configuration
+# Mirrors production for testing and validation
+
+api:
+  wikimedia_base_url: "https://wikimedia.org/api/rest_v1"
+  rate_limit: 200
+  timeout: 30
+  max_retries: 5
+  backoff_factor: 2.0
+  user_agent: "WikipediaIntelligenceSystem/1.0 (Staging)"
+
+database:
+  use_sqlite: false
+  postgres_host: "${POSTGRES_HOST}"
+  postgres_port: 5432
+  postgres_db: "${POSTGRES_DB}"
+  postgres_user: "${POSTGRES_USER}"
+  postgres_password: "${POSTGRES_PASSWORD}"
+  pool_size: 20
+  pool_timeout: 30
+  pool_recycle: 3600
+  pool_pre_ping: true
+
+cache:
+  redis_host: "${REDIS_HOST}"
+  redis_port: 6379
+  redis_db: 0
+  max_connections: 100
+  socket_timeout: 5
+  socket_connect_timeout: 5
+  retry_on_timeout: true
+
+logging:
+  level: "INFO"
+  json_format: true
+  log_file: "logs/app_staging.log"
+  max_bytes: 52428800  # 50MB
+  backup_count: 10
+  console_output: true
+
+crawler:
+  max_concurrent: 20
+  crawl_delay: 0.5
+  max_depth: 3
+  respect_robots_txt: true
+  timeout: 30
+  max_retries: 5
+  user_agent: "WikipediaIntelligenceSystem/1.0 (Staging)"
+
+analytics:
+  min_training_days: 90
+  forecast_periods: 30
+  hype_threshold: 0.75
+  reputation_alert_threshold: 0.7
+  clustering_n_clusters: 20
+  seasonality_detection: true
+
+dashboard:
+  refresh_interval: 300
+  cache_ttl: 300
+  port: 8501
+  enable_profiler: false
+  debug_mode: false
+
+scheduling:
+  enable_scheduled_jobs: true
+  pageviews_collection_interval: 3600
+  edits_collection_interval: 86400
+  crawl_interval: 604800
+  model_retraining_interval: 604800
+
+alerts:
+  email_enabled: true
+  webhook_url: "${ALERT_WEBHOOK_URL}"
+  slack_webhook_url: "${SLACK_WEBHOOK_URL}"
+  alert_cooldown: 3600
+
+performance:
+  max_workers: 8
+  chunk_size: 5000
+  batch_size: 500
+  enable_query_logging: false
+  enable_profiling: false

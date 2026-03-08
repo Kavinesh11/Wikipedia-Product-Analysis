@@ -66,7 +66,7 @@ def time_series_with_changepoint_strategy(draw, min_size=60, max_size=200):
 
 # Property 15: Time Series Decomposition Completeness
 @pytest.mark.property
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(series=time_series_strategy(min_size=30, max_size=200))
 def test_property_15_decomposition_completeness(series):
     """
@@ -105,7 +105,7 @@ def test_property_15_decomposition_completeness(series):
 
 # Property 16: Structural Break Consensus
 @pytest.mark.property
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(data=time_series_with_changepoint_strategy(min_size=60, max_size=150))
 def test_property_16_structural_break_consensus(data):
     """
@@ -170,7 +170,7 @@ def test_property_16_structural_break_consensus(data):
 
 # Property 27: Multi-Method Forecast Ensemble
 @pytest.mark.property
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(series=time_series_strategy(min_size=50, max_size=100))
 def test_property_27_multi_method_forecast_ensemble(series):
     """

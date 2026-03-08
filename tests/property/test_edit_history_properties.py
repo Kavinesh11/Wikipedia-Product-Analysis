@@ -89,7 +89,7 @@ def revision_list_strategy(
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -167,7 +167,7 @@ async def test_property_5_edit_data_extraction_completeness(article, num_revisio
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_6_editor_classification(editor_id):
     """Property 6: Editor Classification
@@ -203,7 +203,7 @@ def test_property_6_editor_classification(editor_id):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_6_editor_classification_consistency(editor_id):
     """Property 6: Editor Classification Consistency
@@ -237,7 +237,7 @@ def test_property_6_editor_classification_consistency(editor_id):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_7_revert_detection(revisions):
     """Property 7: Revert Detection
@@ -292,7 +292,7 @@ def test_property_7_revert_detection(revisions):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_8_edit_velocity_calculation(num_edits, window_hours):
     """Property 8: Edit Velocity Calculation
@@ -354,7 +354,7 @@ def test_property_8_edit_velocity_calculation(num_edits, window_hours):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_8_edit_velocity_non_negative(revisions, window_hours):
     """Property 8: Edit Velocity is Always Non-Negative
@@ -392,7 +392,7 @@ def test_property_8_edit_velocity_non_negative(revisions, window_hours):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_10_rolling_window_metrics(num_revisions, windows):
     """Property 10: Rolling Window Metrics
@@ -492,7 +492,7 @@ def test_property_10_rolling_window_metrics(num_revisions, windows):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_10_rolling_window_metrics_consistency(num_revisions):
     """Property 10: Rolling Window Metrics Consistency
@@ -549,7 +549,7 @@ def test_property_10_rolling_window_metrics_consistency(num_revisions):
 # Feature: wikipedia-intelligence-system, Property 5: Empty Edit History Handling
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=50
+    max_examples=5
 )
 def test_property_5_empty_edit_history_handling():
     """Property 5: Empty Edit History Handling

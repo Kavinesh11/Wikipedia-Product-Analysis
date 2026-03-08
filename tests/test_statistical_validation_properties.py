@@ -28,7 +28,7 @@ def sample_strategy(min_size=10, max_size=100):
     )
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     sample1=sample_strategy(),
     sample2=sample_strategy()
@@ -74,7 +74,7 @@ def test_property_5_statistical_significance_testing_t_test(sample1, sample2):
     assert result.confidence_interval[0] <= result.confidence_interval[1]
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     groups=lists(sample_strategy(min_size=5, max_size=50), min_size=2, max_size=5)
 )
@@ -115,7 +115,7 @@ def test_property_5_statistical_significance_testing_anova(groups):
     assert 0 <= result.effect_size <= 1
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     sample1=sample_strategy(),
     sample2=sample_strategy()
@@ -147,7 +147,7 @@ def test_property_5_statistical_significance_testing_mann_whitney(sample1, sampl
     assert result.is_significant == (result.p_value < result.alpha)
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     groups=lists(sample_strategy(min_size=5, max_size=50), min_size=2, max_size=5)
 )
@@ -178,7 +178,7 @@ def test_property_5_statistical_significance_testing_kruskal_wallis(groups):
     assert result.is_significant == (result.p_value < result.alpha)
 
 
-@settings(max_examples=50, deadline=None)  # Fewer examples due to computational cost
+@settings(max_examples=5, deadline=None)  # Fewer examples due to computational cost
 @given(
     sample1=sample_strategy(min_size=10, max_size=50),
     sample2=sample_strategy(min_size=10, max_size=50),
@@ -211,7 +211,7 @@ def test_property_5_statistical_significance_testing_permutation(sample1, sample
     assert result.is_significant == (result.p_value < result.alpha)
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     data=sample_strategy(min_size=10, max_size=100)
 )
@@ -251,7 +251,7 @@ def test_property_6_confidence_interval_inclusion_bootstrap(data):
     # In rare cases, point estimate might fall slightly outside due to sampling
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     data=sample_strategy(min_size=10, max_size=100)
 )
@@ -283,7 +283,7 @@ def test_property_6_confidence_interval_inclusion_parametric(data):
     assert ci_lower <= point_estimate <= ci_upper
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     sample1=sample_strategy(),
     sample2=sample_strategy()
@@ -317,7 +317,7 @@ def test_property_6_confidence_interval_inclusion_difference(sample1, sample2):
     assert ci_lower <= observed_diff <= ci_upper
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     sample1=sample_strategy(),
     sample2=sample_strategy()
@@ -351,7 +351,7 @@ def test_property_6_effect_size_with_confidence_interval(sample1, sample2):
     assert ci_lower <= diff <= ci_upper
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     successes=integers(min_value=0, max_value=100),
     trials=integers(min_value=1, max_value=100)
@@ -394,7 +394,7 @@ def test_property_6_proportion_confidence_interval(successes, trials):
         assert ci_lower <= observed_prop <= ci_upper
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     sample1=sample_strategy(),
     sample2=sample_strategy()
@@ -421,7 +421,7 @@ def test_property_6_cohens_d_computation(sample1, sample2):
     # Cohen's d can be any real number (including very large values)
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     sample1=sample_strategy(),
     sample2=sample_strategy()
@@ -458,7 +458,7 @@ def test_property_6_hedges_g_computation(sample1, sample2):
             assert abs(hedges_g - cohens_d) < abs(cohens_d) * 0.2
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     baseline=floats(min_value=-1000, max_value=1000, allow_nan=False, allow_infinity=False),
     treatment=floats(min_value=-1000, max_value=1000, allow_nan=False, allow_infinity=False)

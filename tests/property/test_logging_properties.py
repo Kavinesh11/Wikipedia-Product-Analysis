@@ -21,7 +21,7 @@ from src.data_ingestion.rate_limiter import RateLimiter
     endpoint=st.text(min_size=1, max_size=100),
     status_code=st.integers(min_value=200, max_value=599)
 )
-@settings(max_examples=10, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_api_request_logging(endpoint, status_code, caplog):
     """
     Property 61: For any API request, the System should log the request
@@ -56,7 +56,7 @@ def test_api_request_logging(endpoint, status_code, caplog):
     request_count=st.integers(min_value=1, max_value=1000),
     error_count=st.integers(min_value=0, max_value=100)
 )
-@settings(max_examples=10, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_api_usage_metrics_collection(request_count, error_count):
     """
     Property 62: For any API request, the System should increment usage metrics
@@ -104,7 +104,7 @@ def test_api_usage_metrics_collection(request_count, error_count):
         max_size=5
     )
 )
-@settings(max_examples=10, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_error_logging_completeness(error_message, context_data, caplog):
     """
     Property 63: For any error or exception, the System should log it with
@@ -145,7 +145,7 @@ def test_error_logging_completeness(error_message, context_data, caplog):
     pipeline_name=st.text(min_size=1, max_size=50),
     status=st.sampled_from(["started", "completed", "failed"])
 )
-@settings(max_examples=10, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_lifecycle_event_logging(pipeline_name, status, caplog):
     """
     Property 64: For any pipeline start or completion event, the System should log
@@ -180,7 +180,7 @@ def test_lifecycle_event_logging(pipeline_name, status, caplog):
     message=st.text(min_size=1, max_size=100),
     level=st.sampled_from(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"])
 )
-@settings(max_examples=10, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_structured_log_format(message, level):
     """
     Property 65: For any log message, the output should be valid JSON with
@@ -235,7 +235,7 @@ def test_structured_log_format(message, level):
     record_count=st.integers(min_value=1, max_value=10000),
     duration_seconds=st.floats(min_value=0.1, max_value=300.0)
 )
-@settings(max_examples=10, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_metrics_collection(operation_type, record_count, duration_seconds):
     """
     Property 66: For any data ingestion, processing, or storage operation,

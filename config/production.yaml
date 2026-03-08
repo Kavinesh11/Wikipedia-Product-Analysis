@@ -1,0 +1,107 @@
+# Production Environment Configuration
+# Optimized for performance, reliability, and security
+
+api:
+  wikimedia_base_url: "https://wikimedia.org/api/rest_v1"
+  rate_limit: 200
+  timeout: 30
+  max_retries: 5
+  backoff_factor: 2.0
+  user_agent: "WikipediaIntelligenceSystem/1.0"
+
+database:
+  use_sqlite: false
+  postgres_host: "${POSTGRES_HOST}"
+  postgres_port: 5432
+  postgres_db: "${POSTGRES_DB}"
+  postgres_user: "${POSTGRES_USER}"
+  postgres_password: "${POSTGRES_PASSWORD}"
+  pool_size: 50
+  pool_timeout: 30
+  pool_recycle: 3600
+  pool_pre_ping: true
+  echo: false
+
+cache:
+  redis_host: "${REDIS_HOST}"
+  redis_port: 6379
+  redis_db: 0
+  max_connections: 200
+  socket_timeout: 5
+  socket_connect_timeout: 5
+  retry_on_timeout: true
+  health_check_interval: 30
+
+logging:
+  level: "INFO"
+  json_format: true
+  log_file: "logs/app_production.log"
+  max_bytes: 104857600  # 100MB
+  backup_count: 20
+  console_output: false
+  syslog_enabled: false
+  syslog_address: "/dev/log"
+
+crawler:
+  max_concurrent: 50
+  crawl_delay: 0.2
+  max_depth: 3
+  respect_robots_txt: true
+  timeout: 30
+  max_retries: 5
+  user_agent: "WikipediaIntelligenceSystem/1.0"
+
+analytics:
+  min_training_days: 90
+  forecast_periods: 30
+  hype_threshold: 0.75
+  reputation_alert_threshold: 0.7
+  clustering_n_clusters: 20
+  seasonality_detection: true
+  enable_model_caching: true
+
+dashboard:
+  refresh_interval: 300
+  cache_ttl: 300
+  port: 8501
+  enable_profiler: false
+  debug_mode: false
+  max_cache_size: 1000
+
+scheduling:
+  enable_scheduled_jobs: true
+  pageviews_collection_interval: 3600  # 1 hour
+  edits_collection_interval: 86400  # 24 hours
+  crawl_interval: 604800  # 7 days
+  model_retraining_interval: 604800  # 7 days
+  health_check_interval: 300  # 5 minutes
+
+alerts:
+  email_enabled: "${ALERT_EMAIL_ENABLED}"
+  webhook_url: "${ALERT_WEBHOOK_URL}"
+  slack_webhook_url: "${SLACK_WEBHOOK_URL}"
+  alert_cooldown: 3600
+  critical_alert_cooldown: 300
+  max_alerts_per_hour: 10
+
+performance:
+  max_workers: 16
+  chunk_size: 10000
+  batch_size: 1000
+  enable_query_logging: false
+  enable_profiling: false
+  connection_pool_recycle: 3600
+
+security:
+  encrypt_sensitive_config: true
+  enable_ssl: true
+  ssl_cert_path: "${SSL_CERT_PATH}"
+  ssl_key_path: "${SSL_KEY_PATH}"
+  api_key_rotation_days: 90
+
+monitoring:
+  enable_health_checks: true
+  health_check_port: 8080
+  metrics_enabled: true
+  metrics_port: 9090
+  tracing_enabled: false

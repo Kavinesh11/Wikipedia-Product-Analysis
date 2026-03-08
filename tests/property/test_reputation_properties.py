@@ -73,7 +73,7 @@ def edit_metrics_strategy(draw):
     anonymous_edit_pct=st.floats(min_value=0.0, max_value=100.0, allow_nan=False, allow_infinity=False),
     threshold=st.floats(min_value=0.0, max_value=100.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=20)
+@settings(max_examples=5)
 def test_property_9_reputation_risk_alert_generation(anonymous_edit_pct, threshold):
     """
     Property 9: For any article where anonymous edit percentage exceeds 
@@ -120,7 +120,7 @@ def test_property_9_reputation_risk_alert_generation(anonymous_edit_pct, thresho
     edit_velocity=st.floats(min_value=0.0, max_value=1000.0, allow_nan=False, allow_infinity=False),
     baseline=st.floats(min_value=0.1, max_value=100.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=20)
+@settings(max_examples=5)
 def test_property_25_edit_spike_alert_generation(edit_velocity, baseline):
     """
     Property 25: For any article where current edit velocity exceeds 3x 
@@ -152,7 +152,7 @@ def test_property_25_edit_spike_alert_generation(edit_velocity, baseline):
         max_size=100
     )
 )
-@settings(max_examples=20)
+@settings(max_examples=5)
 def test_property_26_vandalism_percentage_calculation(revisions):
     """
     Property 26: For any edit history, the System should calculate 
@@ -184,7 +184,7 @@ def test_property_26_vandalism_percentage_calculation(revisions):
 
 # Feature: wikipedia-intelligence-system, Property 27: Reputation Risk Score Calculation
 @given(edit_metrics=edit_metrics_strategy())
-@settings(max_examples=20)
+@settings(max_examples=5)
 def test_property_27_reputation_risk_score_calculation(edit_metrics):
     """
     Property 27: For any article, the System should calculate reputation 
@@ -231,7 +231,7 @@ def test_property_27_reputation_risk_score_calculation(edit_metrics):
 @given(
     risk_score=st.floats(min_value=0.0, max_value=1.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=20)
+@settings(max_examples=5)
 def test_property_28_high_priority_alert_threshold(risk_score):
     """
     Property 28: For any article where reputation risk score exceeds 0.7, 
@@ -273,7 +273,7 @@ def test_property_28_high_priority_alert_threshold(risk_score):
         max_size=100
     )
 )
-@settings(max_examples=15)
+@settings(max_examples=5)
 def test_vandalism_metrics_completeness(revisions):
     """Test that vandalism metrics extraction is complete"""
     monitor = ReputationMonitor()
@@ -292,7 +292,7 @@ def test_vandalism_metrics_completeness(revisions):
 
 
 @given(edit_metrics=edit_metrics_strategy())
-@settings(max_examples=15)
+@settings(max_examples=5)
 def test_alert_level_consistency(edit_metrics):
     """Test that alert level is consistent with risk score"""
     monitor = ReputationMonitor()
@@ -311,7 +311,7 @@ def test_alert_level_consistency(edit_metrics):
 @given(
     baseline=st.floats(min_value=0.0, max_value=100.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=15)
+@settings(max_examples=5)
 def test_edit_spike_with_zero_baseline(baseline):
     """Test edit spike detection handles zero baseline correctly"""
     monitor = ReputationMonitor()

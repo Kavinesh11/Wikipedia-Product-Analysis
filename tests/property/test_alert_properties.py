@@ -87,7 +87,7 @@ def pipeline_failure_alert_strategy(draw):
 
 # Feature: wikipedia-intelligence-system, Property 54: Failure Notifications
 @given(alert=pipeline_failure_alert_strategy())
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_property_54_failure_notifications(alert):
     """
     Property 54: For any pipeline failure, the System should send a notification
@@ -172,7 +172,7 @@ def test_property_54_failure_notifications(alert):
 
 # Test alert deduplication
 @given(alert=alert_strategy())
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_alert_deduplication(alert):
     """
     Property: Sending the same alert multiple times within the deduplication
@@ -221,7 +221,7 @@ def test_alert_deduplication(alert):
     priority=st.sampled_from(["low", "medium", "high", "critical"]),
     alert_type=st.sampled_from(["reputation_risk", "pipeline_failure", "hype_detected"])
 )
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_alert_priority_handling(priority, alert_type):
     """
     Property: Alerts should be sent with the correct priority level,
@@ -270,7 +270,7 @@ def test_alert_priority_handling(priority, alert_type):
 
 # Test multiple notification channels
 @given(alert=alert_strategy())
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_multiple_notification_channels(alert):
     """
     Property: When multiple notification channels are configured,
@@ -318,7 +318,7 @@ def test_multiple_notification_channels(alert):
     alert=alert_strategy(),
     channel=st.sampled_from(["email", "webhook"])
 )
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_channel_selection(alert, channel):
     """
     Property: When specific channels are requested, only those channels

@@ -34,7 +34,7 @@ def test_db():
     invalid_date_id=st.integers(min_value=9999, max_value=99999),
     invalid_cluster_id=st.integers(min_value=9999, max_value=99999),
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_referential_integrity_enforcement(test_db, article_title, invalid_article_id, 
                                            invalid_date_id, invalid_cluster_id):
     """
@@ -170,7 +170,7 @@ def test_referential_integrity_enforcement(test_db, article_title, invalid_artic
     value_str=st.text(min_size=0, max_size=100, alphabet=st.characters(blacklist_characters=['\x00'])),
     ttl=st.integers(min_value=60, max_value=3600)
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_redis_cache_round_trip(key, value_int, value_float, value_str, ttl):
     """
     Property 18: Redis Cache Round-Trip

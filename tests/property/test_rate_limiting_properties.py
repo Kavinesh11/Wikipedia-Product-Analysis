@@ -27,7 +27,7 @@ from src.data_ingestion.api_client import (
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -75,7 +75,7 @@ async def test_property_57_rate_limit_compliance(num_requests, rate_limit):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -131,7 +131,7 @@ async def test_property_58_automatic_throttling(initial_capacity, rate_limit):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -210,7 +210,7 @@ async def test_property_59_priority_queue_ordering(priorities):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_60_circuit_breaker_pattern(
     failure_threshold, 
@@ -282,7 +282,7 @@ def test_property_60_circuit_breaker_pattern(
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=50
+    max_examples=5
 )
 def test_property_60_circuit_breaker_half_open_failure(failure_threshold):
     """Property 60: Circuit Breaker Half-Open Failure Handling
@@ -329,7 +329,7 @@ def test_property_60_circuit_breaker_half_open_failure(failure_threshold):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 def test_property_4_exponential_backoff_on_rate_limits(

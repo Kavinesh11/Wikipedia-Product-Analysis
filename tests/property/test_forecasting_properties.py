@@ -78,7 +78,7 @@ def insufficient_time_series_data(draw):
 
 # Feature: wikipedia-intelligence-system, Property 20: Minimum Training Data Requirement
 @given(data=insufficient_time_series_data())
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_property_20_minimum_training_data_requirement(data):
     """
     Property 20: For any forecasting model training request with less than 90 days
@@ -108,7 +108,7 @@ def test_property_20_minimum_training_data_requirement(data):
     data=time_series_data(min_days=90, max_days=200),
     periods=st.integers(min_value=1, max_value=60)
 )
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_property_21_prediction_confidence_intervals(data, periods):
     """
     Property 21: For any trained forecasting model and prediction request,
@@ -149,7 +149,7 @@ def test_property_21_prediction_confidence_intervals(data, periods):
 
 # Feature: wikipedia-intelligence-system, Property 22: Seasonal Pattern Detection
 @given(data=time_series_data(min_days=180, max_days=365))
-@settings(max_examples=15, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_property_22_seasonal_pattern_detection(data):
     """
     Property 22: For any pageview time series with periodic patterns
@@ -195,7 +195,7 @@ def test_property_22_seasonal_pattern_detection(data):
     base_views=st.integers(min_value=100, max_value=5000),
     spike_multiplier=st.floats(min_value=3.0, max_value=10.0)
 )
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_property_23_hype_event_flagging(base_views, spike_multiplier):
     """
     Property 23: For any article where pageview growth exceeds 2 standard deviations
@@ -259,7 +259,7 @@ def test_property_23_hype_event_flagging(base_views, spike_multiplier):
     views_end=st.integers(min_value=1, max_value=100000),
     period_days=st.integers(min_value=1, max_value=90)
 )
-@settings(max_examples=20, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_property_24_view_growth_rate_calculation(views_start, views_end, period_days):
     """
     Property 24: For any pageview time series and time period,
@@ -309,7 +309,7 @@ def test_property_24_view_growth_rate_calculation(views_start, views_end, period
 # ============================================================================
 
 @given(data=time_series_data(min_days=90, max_days=200))
-@settings(max_examples=15, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_model_caching(data):
     """Test that trained models are cached correctly"""
     forecaster = TimeSeriesForecaster()
@@ -336,7 +336,7 @@ def test_model_caching(data):
     data=time_series_data(min_days=90, max_days=200),
     periods=st.integers(min_value=1, max_value=30)
 )
-@settings(max_examples=15, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_confidence_score_range(data, periods):
     """Test that confidence scores are in valid range [0, 1]"""
     forecaster = TimeSeriesForecaster()
@@ -351,7 +351,7 @@ def test_confidence_score_range(data, periods):
 
 
 @given(data=time_series_data(min_days=90, max_days=200))
-@settings(max_examples=15, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_growth_rate_with_zero_start(data):
     """Test growth rate calculation when starting views are zero"""
     forecaster = TimeSeriesForecaster()

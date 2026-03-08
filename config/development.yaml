@@ -1,0 +1,85 @@
+# Development Environment Configuration
+# Optimized for local development and testing
+
+api:
+  wikimedia_base_url: "https://wikimedia.org/api/rest_v1"
+  rate_limit: 200  # requests per second
+  timeout: 30
+  max_retries: 3
+  backoff_factor: 2.0
+  user_agent: "WikipediaIntelligenceSystem/1.0 (Development)"
+
+database:
+  # SQLite configuration for easy local development
+  use_sqlite: true
+  sqlite_path: "data/wikipedia_intelligence_dev.db"
+  
+  # PostgreSQL configuration (optional for development)
+  postgres_host: "localhost"
+  postgres_port: 5432
+  postgres_db: "wikipedia_intelligence_dev"
+  postgres_user: "dev_user"
+  postgres_password: "dev_password"
+  pool_size: 10
+  pool_timeout: 30
+  pool_recycle: 3600
+
+cache:
+  redis_host: "localhost"
+  redis_port: 6379
+  redis_db: 0
+  max_connections: 50
+  socket_timeout: 5
+  socket_connect_timeout: 5
+
+logging:
+  level: "DEBUG"
+  json_format: true
+  log_file: "logs/app_dev.log"
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
+  console_output: true
+
+crawler:
+  max_concurrent: 10
+  crawl_delay: 1.0  # seconds
+  max_depth: 2
+  respect_robots_txt: true
+  timeout: 30
+  max_retries: 3
+  user_agent: "WikipediaIntelligenceSystem/1.0 (Development)"
+
+analytics:
+  min_training_days: 90
+  forecast_periods: 30
+  hype_threshold: 0.75
+  reputation_alert_threshold: 0.7
+  clustering_n_clusters: 20
+  seasonality_detection: true
+
+dashboard:
+  refresh_interval: 300  # 5 minutes
+  cache_ttl: 300
+  port: 8501
+  enable_profiler: true
+  debug_mode: true
+
+scheduling:
+  enable_scheduled_jobs: false  # Disabled by default in development
+  pageviews_collection_interval: 3600  # 1 hour
+  edits_collection_interval: 86400  # 24 hours
+  crawl_interval: 604800  # 7 days
+  model_retraining_interval: 604800  # 7 days
+
+alerts:
+  email_enabled: false
+  webhook_url: ""
+  slack_webhook_url: ""
+  alert_cooldown: 3600  # 1 hour between duplicate alerts
+
+performance:
+  max_workers: 4
+  chunk_size: 1000
+  batch_size: 100
+  enable_query_logging: true
+  enable_profiling: true

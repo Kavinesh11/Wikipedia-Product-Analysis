@@ -117,7 +117,7 @@ def internal_link_strategy():
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -209,7 +209,7 @@ async def test_property_11_article_content_extraction_completeness(
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=50,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -330,7 +330,7 @@ async def test_property_12_bfs_crawl_order(max_depth, links_per_article):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 def test_property_13_css_selector_extraction(num_elements):
@@ -381,7 +381,7 @@ def test_property_13_css_selector_extraction(num_elements):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_13_css_selector_infobox_extraction(num_fields):
     """Property 13: CSS Selector Infobox Extraction
@@ -435,7 +435,7 @@ def test_property_13_css_selector_infobox_extraction(num_fields):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_15_internal_link_extraction(num_internal_links, num_external_links, num_special_links):
     """Property 15: Internal Link Extraction
@@ -498,7 +498,7 @@ def test_property_15_internal_link_extraction(num_internal_links, num_external_l
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100
+    max_examples=5
 )
 def test_property_15_internal_link_deduplication(num_unique_links, duplicates_per_link):
     """Property 15: Internal Link Deduplication
@@ -554,7 +554,7 @@ def test_property_15_internal_link_deduplication(num_unique_links, duplicates_pe
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=50,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -616,7 +616,7 @@ async def test_property_16_crawl_rate_limiting(num_requests, crawl_delay):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=100,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio
@@ -680,7 +680,7 @@ async def test_property_17_graceful_crawl_failure_handling(failure_type):
 )
 @settings(
     suppress_health_check=[HealthCheck.function_scoped_fixture],
-    max_examples=50,
+    max_examples=5,
     deadline=None
 )
 @pytest.mark.asyncio

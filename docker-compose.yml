@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: wikipedia-intelligence-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-wikipedia_intelligence}
+      POSTGRES_USER: ${POSTGRES_USER:-wiki_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wiki_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wiki_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wiki-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: wikipedia-intelligence-cache
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wiki-network
+
+  # Wikipedia Intelligence Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wikipedia-intelligence-app
+    environment:
+      # Environment
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      
+      # Database
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-wikipedia_intelligence}
+      POSTGRES_USER: ${POSTGRES_USER:-wiki_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wiki_password}
+      
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: ${REDIS_DB:-0}
+      
+      # API
+      WIKIMEDIA_API_BASE_URL: ${WIKIMEDIA_API_BASE_URL:-https://wikimedia.org/api/rest_v1}
+      WIKIMEDIA_RATE_LIMIT: ${WIKIMEDIA_RATE_LIMIT:-200}
+      
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      
+      # Dashboard
+      DASHBOARD_AUTO_REFRESH_INTERVAL: ${DASHBOARD_AUTO_REFRESH_INTERVAL:-300}
+      
+      # Alerts
+      ALERT_EMAIL_ENABLED: ${ALERT_EMAIL_ENABLED:-false}
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+    ports:
+      - "${DASHBOARD_PORT:-8501}:8501"
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./output:/app/output
+      - ./config:/app/config
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - wiki-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  wiki-network:
+    driver: bridge

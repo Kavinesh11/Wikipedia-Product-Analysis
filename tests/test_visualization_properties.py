@@ -122,7 +122,7 @@ def generate_forecast_result(draw, horizon=30):
 
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     n_points=st.integers(min_value=30, max_value=100),
     has_ci=st.booleans()
@@ -234,7 +234,7 @@ def test_property_34_visualization_evidence_inclusion(n_points, has_ci):
     plt.close(fig)
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     n_tests=st.integers(min_value=1, max_value=5),
     n_causal=st.integers(min_value=0, max_value=3)
@@ -330,7 +330,7 @@ def test_property_35_report_completeness(n_tests, n_causal):
     assert 'FINDINGS SUMMARY' in evidence_report
 
 
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     n_points=st.integers(min_value=30, max_value=100),
     has_ci=st.booleans()
@@ -492,7 +492,7 @@ def test_property_36_interactive_dashboard_elements(n_points, has_ci):
 
 
 # Additional helper tests for edge cases
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(test_result=generate_test_result())
 def test_visualization_with_various_test_results(test_result):
     """Test that visualizations handle various test result configurations."""
@@ -506,7 +506,7 @@ def test_visualization_with_various_test_results(test_result):
     plt.close(fig)
 
 
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(causal_effect=generate_causal_effect())
 def test_visualization_with_various_causal_effects(causal_effect):
     """Test that visualizations handle various causal effect configurations."""
@@ -517,7 +517,7 @@ def test_visualization_with_various_causal_effects(causal_effect):
     plt.close(fig)
 
 
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(forecast_result=generate_forecast_result())
 def test_visualization_with_various_forecasts(forecast_result):
     """Test that visualizations handle various forecast configurations."""

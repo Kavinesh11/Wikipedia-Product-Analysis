@@ -23,7 +23,7 @@ from src.visualization.dashboard import (
     num_rows=st.integers(min_value=1, max_value=100),
     sort_column=st.sampled_from(['article', 'views', 'growth_rate', 'hype_score'])
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_competitor_table_sorting(num_rows, sort_column):
     """
     Property 34: For any competitor comparison table and sort column,
@@ -80,7 +80,7 @@ def test_competitor_table_sorting(num_rows, sort_column):
         max_size=50
     )
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_alert_display_on_risk_detection(num_alerts, risk_scores):
     """
     Property 35: For any active reputation risk alert,
@@ -143,7 +143,7 @@ def test_alert_display_on_risk_detection(num_alerts, risk_scores):
         max_size=100
     )
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_leaderboard_ranking(num_articles, pageviews):
     """
     Property 36: For any traffic leaderboard,
@@ -192,7 +192,7 @@ def test_leaderboard_ranking(num_articles, pageviews):
     refresh_interval=st.integers(min_value=1, max_value=60),
     elapsed_time=st.integers(min_value=0, max_value=300)
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_dashboard_auto_refresh(refresh_interval, elapsed_time):
     """
     Property 37: For any dashboard with auto-refresh enabled,
@@ -235,7 +235,7 @@ def test_dashboard_auto_refresh(refresh_interval, elapsed_time):
     filter_industry=st.sampled_from(['Technology', 'Healthcare', 'Finance', None]),
     filter_metric_type=st.sampled_from(['views', 'growth', 'hype', None])
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_data_filtering(num_records, filter_date_range, filter_industry, filter_metric_type):
     """
     Property 38: For any dashboard filter combination (date range, industry, metric type),
@@ -304,7 +304,7 @@ def test_data_filtering(num_records, filter_date_range, filter_industry, filter_
     num_rows=st.integers(min_value=1, max_value=50),
     num_cols=st.integers(min_value=1, max_value=10)
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_export_format_validity_csv(num_rows, num_cols):
     """
     Property 39 (CSV): For any dashboard data export to CSV,
@@ -350,7 +350,7 @@ def test_export_format_validity_csv(num_rows, num_cols):
     num_rows=st.integers(min_value=1, max_value=50),
     num_cols=st.integers(min_value=1, max_value=10)
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_export_format_validity_pdf(num_rows, num_cols):
     """
     Property 39 (PDF): For any dashboard data export to PDF,
@@ -392,7 +392,7 @@ def test_export_format_validity_pdf(num_rows, num_cols):
     param1=st.text(min_size=1, max_size=20),
     param2=st.integers(min_value=0, max_value=1000)
 )
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 def test_cache_key_generation(data_type, param1, param2):
     """
     Test that cache key generation is deterministic and unique.

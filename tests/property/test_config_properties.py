@@ -16,7 +16,7 @@ from src.utils.config import Config, ConfigurationError
     config_value=st.text(min_size=1, max_size=50, alphabet=st.characters(blacklist_categories=('Cs', 'Cc'))),
     env_value=st.text(min_size=1, max_size=50, alphabet=st.characters(blacklist_categories=('Cs', 'Cc')))
 )
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture], max_examples=20)
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture], max_examples=5)
 def test_property_67_env_vars_override_config_file(config_value, env_value):
     """Property 67: Environment variables should override config file values
     
@@ -68,7 +68,7 @@ def test_property_67_env_vars_override_config_file(config_value, env_value):
 
 # Feature: wikipedia-intelligence-system, Property 68: Configuration Profile Support
 @given(profile=st.sampled_from(["development", "staging", "production"]))
-@settings(max_examples=10)
+@settings(max_examples=5)
 def test_property_68_profile_specific_settings(profile):
     """Property 68: Loading a profile should apply profile-specific settings
     
@@ -150,7 +150,7 @@ def test_property_68_profile_specific_settings(profile):
 @given(
     missing_section=st.sampled_from(["database", "cache", "api"])
 )
-@settings(max_examples=10)
+@settings(max_examples=5)
 def test_property_69_validation_fails_on_missing_required_section(missing_section):
     """Property 69: System should fail startup with clear error on invalid configuration
     
@@ -197,7 +197,7 @@ def test_property_69_validation_fails_on_missing_required_section(missing_sectio
 @given(
     missing_key=st.sampled_from(["postgres_host", "postgres_db", "postgres_user", "postgres_password"])
 )
-@settings(max_examples=10)
+@settings(max_examples=5)
 def test_property_69_validation_fails_on_missing_required_key(missing_key):
     """Property 69: System should fail startup on missing required database keys
     

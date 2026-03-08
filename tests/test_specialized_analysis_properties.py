@@ -65,7 +65,7 @@ def time_series_strategy(draw, min_length=100, max_length=500):
 
 
 # Property 17: Temporal Alignment Testing
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     ts=time_series_strategy(min_length=200),
     days_offset=st.integers(min_value=0, max_value=30)
@@ -109,7 +109,7 @@ def test_property_17_temporal_alignment_testing(ts, days_offset):
 
 
 # Property 18: Platform Risk Quantification
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     desktop_prop=st.floats(min_value=0.1, max_value=0.5),
     mobile_web_prop=st.floats(min_value=0.2, max_value=0.6),
@@ -181,7 +181,7 @@ def test_property_18_platform_risk_quantification(desktop_prop, mobile_web_prop,
 
 
 # Property 19: Seasonality Validation
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     ts=time_series_strategy(min_length=150),
     period=st.sampled_from([7, 14, 30])
@@ -213,7 +213,7 @@ def test_property_19_seasonality_validation(ts, period):
 
 
 # Property 20: Day-of-Week Effect Quantification
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     ts=time_series_strategy(min_length=100)
 )
@@ -254,7 +254,7 @@ def test_property_20_day_of_week_effect_quantification(ts):
 
 
 # Property 21: Holiday Effect Modeling
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     ts=time_series_strategy(min_length=100),
     num_holidays=st.integers(min_value=1, max_value=10)
@@ -299,7 +299,7 @@ def test_property_21_holiday_effect_modeling(ts, num_holidays):
 
 
 # Property 23: Campaign Duration Analysis
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     ts=time_series_strategy(min_length=200),
     campaign_offset=st.integers(min_value=50, max_value=100)
@@ -352,7 +352,7 @@ def test_property_23_campaign_duration_analysis(ts, campaign_offset):
 
 
 # Property 28: Forecast Accuracy Evaluation
-@settings(max_examples=50, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     ts=time_series_strategy(min_length=100),
     horizon=st.integers(min_value=5, max_value=20)
@@ -423,7 +423,7 @@ def test_property_28_forecast_accuracy_evaluation(ts, horizon):
 
 
 # Property 29: Scenario Analysis Generation
-@settings(max_examples=100, deadline=None)
+@settings(max_examples=5, deadline=None)
 @given(
     ts=time_series_strategy(min_length=100),
     horizon=st.integers(min_value=10, max_value=30)

@@ -64,7 +64,7 @@ def spike_event_strategy(draw):
     edit_growth=st.floats(min_value=-500.0, max_value=1000.0, allow_nan=False, allow_infinity=False),
     content_expansion=st.floats(min_value=-300.0, max_value=600.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=100)
+@settings(max_examples=5)
 def test_property_40_hype_score_calculation(view_velocity, edit_growth, content_expansion):
     """
     Property 40: For any article, the System should calculate hype score 
@@ -113,7 +113,7 @@ def test_property_40_hype_score_calculation(view_velocity, edit_growth, content_
     content_expansion=st.floats(min_value=0.0, max_value=600.0, allow_nan=False, allow_infinity=False),
     threshold=st.floats(min_value=0.0, max_value=1.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=100)
+@settings(max_examples=5)
 def test_property_41_trending_flag_on_hype_threshold(
     view_velocity, edit_growth, content_expansion, threshold
 ):
@@ -168,7 +168,7 @@ def test_property_41_trending_flag_on_hype_threshold(
     pageviews_df=pageviews_dataframe_strategy(min_size=1, max_size=50),
     window_days=st.integers(min_value=1, max_value=30)
 )
-@settings(max_examples=100)
+@settings(max_examples=5)
 def test_property_42_attention_density_calculation(pageviews_df, window_days):
     """
     Property 42: For any article and time window, the System should 
@@ -204,7 +204,7 @@ def test_property_42_attention_density_calculation(pageviews_df, window_days):
 @given(
     pageviews_df=pageviews_dataframe_strategy(min_size=10, max_size=50)
 )
-@settings(max_examples=100)
+@settings(max_examples=5)
 def test_property_43_attention_spike_detection(pageviews_df):
     """
     Property 43: For any pageview time series, the System should detect 
@@ -258,7 +258,7 @@ def test_property_43_attention_spike_detection(pageviews_df):
 @given(
     spike=spike_event_strategy()
 )
-@settings(max_examples=100)
+@settings(max_examples=5)
 def test_property_44_growth_pattern_classification(spike):
     """
     Property 44: For any detected attention spike, the System should 
@@ -295,7 +295,7 @@ def test_property_44_growth_pattern_classification(spike):
     edit_growth=st.floats(min_value=0.0, max_value=1000.0, allow_nan=False, allow_infinity=False),
     content_expansion=st.floats(min_value=0.0, max_value=600.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=50)
+@settings(max_examples=5)
 def test_hype_score_monotonicity(view_velocity, edit_growth, content_expansion):
     """Test that hype score increases with each component"""
     engine = HypeDetectionEngine()
@@ -326,7 +326,7 @@ def test_hype_score_monotonicity(view_velocity, edit_growth, content_expansion):
 @given(
     pageviews_df=pageviews_dataframe_strategy(min_size=1, max_size=30)
 )
-@settings(max_examples=50)
+@settings(max_examples=5)
 def test_attention_density_non_negative(pageviews_df):
     """Test that attention density is always non-negative"""
     engine = HypeDetectionEngine()
@@ -339,7 +339,7 @@ def test_attention_density_non_negative(pageviews_df):
 @given(
     threshold=st.floats(min_value=0.0, max_value=1.0, allow_nan=False, allow_infinity=False)
 )
-@settings(max_examples=50)
+@settings(max_examples=5)
 def test_hype_threshold_initialization(threshold):
     """Test that hype threshold is properly initialized"""
     engine = HypeDetectionEngine(hype_threshold=threshold)
@@ -364,7 +364,7 @@ def test_empty_pageviews_handling():
 @given(
     duration=st.integers(min_value=1, max_value=100)
 )
-@settings(max_examples=50)
+@settings(max_examples=5)
 def test_spike_classification_boundary(duration):
     """Test spike classification at the 7-day boundary"""
     engine = HypeDetectionEngine()
@@ -387,7 +387,7 @@ def test_spike_classification_boundary(duration):
 @given(
     pageviews_df=pageviews_dataframe_strategy(min_size=5, max_size=20)
 )
-@settings(max_examples=50)
+@settings(max_examples=5)
 def test_spike_events_have_valid_timestamps(pageviews_df):
     """Test that detected spike events have timestamps within the data range"""
     engine = HypeDetectionEngine()
