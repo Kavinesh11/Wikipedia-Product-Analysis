@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Executive Report – {{ report.time_period }}</title>
+  <style>
+    :root {
+      --primary: #1a3a5c;
+      --accent: #2e86c1;
+      --light: #eaf4fb;
+      --border: #ccc;
+      --text: #222;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; color: var(--text); background: #f5f7fa; }
+    header {
+      background: var(--primary); color: #fff;
+      padding: 24px 40px; display: flex; justify-content: space-between; align-items: center;
+    }
+    header h1 { font-size: 1.8rem; }
+    header p { font-size: 0.9rem; opacity: 0.8; }
+    nav {
+      background: var(--accent); display: flex; gap: 0;
+    }
+    nav a {
+      color: #fff; text-decoration: none; padding: 10px 20px;
+      font-size: 0.9rem; transition: background 0.2s;
+    }
+    nav a:hover { background: rgba(255,255,255,0.2); }
+    main { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+    section { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+              margin-bottom: 28px; padding: 24px; }
+    section h2 { color: var(--primary); font-size: 1.3rem; margin-bottom: 16px;
+                 border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: var(--primary); color: #fff; padding: 10px 12px; text-align: left; }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    tr:nth-child(even) td { background: var(--light); }
+    tr:hover td { background: #d6eaf8; }
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .metric-card {
+      background: var(--light); border-left: 4px solid var(--accent);
+      border-radius: 6px; padding: 14px 16px;
+    }
+    .metric-card .label { font-size: 0.78rem; color: #555; text-transform: uppercase; letter-spacing: 0.05em; }
+    .metric-card .value { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-top: 4px; }
+    .rec-card {
+      border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px;
+      margin-bottom: 12px; position: relative;
+    }
+    .rec-card .priority-badge {
+      display: inline-block; background: var(--accent); color: #fff;
+      border-radius: 12px; padding: 2px 10px; font-size: 0.75rem; margin-bottom: 6px;
+    }
+    .rec-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 6px; }
+    .rec-card p { font-size: 0.88rem; color: #444; margin-bottom: 4px; }
+    .rec-card .outcome { font-style: italic; color: #2e7d32; }
+    .confidence-bar-wrap { background: #ddd; border-radius: 4px; height: 6px; margin-top: 6px; }
+    .confidence-bar { background: var(--accent); height: 6px; border-radius: 4px; }
+    .yoy-pos { color: #2e7d32; font-weight: bold; }
+    .yoy-neg { color: #c62828; font-weight: bold; }
+    footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #888; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Executive Report</h1>
+    <p>Period: {{ report.time_period }}</p>
+  </div>
+  <div style="text-align:right">
+    <p>Report ID: {{ report.report_id }}</p>
+    <p>Generated: {{ report.generation_date.strftime('%Y-%m-%d %H:%M') }}</p>
+  </div>
+</header>
+
+<nav>
+  <a href="#metrics">Metrics Summary</a>
+  <a href="#leaderboard">Leaderboard</a>
+  <a href="#trends">Trends</a>
+  <a href="#recommendations">Recommendations</a>
+  <a href="#roi">ROI Analysis</a>
+</nav>
+
+<main>
+
+  <!-- Metrics Summary -->
+  <section id="metrics">
+    <h2>Metrics Summary</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="label">Total Companies</div>
+        <div class="value">{{ report.metrics_summary.total_companies }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Avg Innovation Score</div>
+        <div class="value">{{ "%.2f"|format(report.metrics_summary.avg_innovation_score) }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Avg Digital Maturity</div>
+        <div class="value">{{ "%.2f"|format(report.metrics_summary.avg_digital_maturity) }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Top Sector</div>
+        <div class="value" style="font-size:1.1rem">{{ report.metrics_summary.top_sector or "N/A" }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Highest Growth Company</div>
+        <div class="value" style="font-size:1.1rem">{{ report.metrics_summary.highest_growth_company or "N/A" }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Highest Growth Rate</div>
+        <div class="value">{{ "%.1f%%"|format(report.metrics_summary.highest_growth_rate * 100) }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leaderboard -->
+  <section id="leaderboard">
+    <h2>Leaderboard – Top Companies by Innovation Score</h2>
+    {% if report.leaderboard %}
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Company</th>
+          <th>Sector</th>
+          <th>Innovation Score</th>
+          <th>Digital Maturity</th>
+          <th>Ecosystem Centrality</th>
+          <th>YoY Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in report.leaderboard %}
+        <tr>
+          <td>{{ entry.rank }}</td>
+          <td>{{ entry.company_name }}</td>
+          <td>{{ entry.sector }}</td>
+          <td>{{ "%.2f"|format(entry.innovation_score) }}</td>
+          <td>{{ "%.2f"|format(entry.digital_maturity) }}</td>
+          <td>{{ "%.4f"|format(entry.ecosystem_centrality) }}</td>
+          <td class="{{ 'yoy-pos' if entry.yoy_change >= 0 else 'yoy-neg' }}">
+            {{ "%+.1f%%"|format(entry.yoy_change * 100) }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No leaderboard data available.</p>
+    {% endif %}
+  </section>
+
+  <!-- Trends Analysis -->
+  <section id="trends">
+    <h2>Trends Analysis</h2>
+    {% if report.trends.innovation_score_trend %}
+    <h3 style="margin-bottom:10px;color:#1a3a5c">Innovation Score Trend</h3>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Avg Innovation Score</th></tr>
+      </thead>
+      <tbody>
+        {% for ts, val in report.trends.innovation_score_trend %}
+        <tr>
+          <td>{{ ts.strftime('%Y-%m-%d') }}</td>
+          <td>{{ "%.2f"|format(val) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No innovation score trend data available.</p>
+    {% endif %}
+
+    {% if report.trends.digital_maturity_trend %}
+    <h3 style="margin:16px 0 10px;color:#1a3a5c">Digital Maturity Trend</h3>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Avg Digital Maturity</th></tr>
+      </thead>
+      <tbody>
+        {% for ts, val in report.trends.digital_maturity_trend %}
+        <tr>
+          <td>{{ ts.strftime('%Y-%m-%d') }}</td>
+          <td>{{ "%.2f"|format(val) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {% if report.trends.inflection_points %}
+    <h3 style="margin:16px 0 10px;color:#1a3a5c">Inflection Points</h3>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Metric</th><th>Value</th><th>Direction Change</th></tr>
+      </thead>
+      <tbody>
+        {% for pt in report.trends.inflection_points %}
+        <tr>
+          <td>{{ pt.timestamp.strftime('%Y-%m-%d') }}</td>
+          <td>{{ pt.metric_name }}</td>
+          <td>{{ "%.2f"|format(pt.value) }}</td>
+          <td>{{ pt.direction_change }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </section>
+
+  <!-- Recommendations -->
+  <section id="recommendations">
+    <h2>Recommendations</h2>
+    {% if report.recommendations %}
+      {% for rec in report.recommendations %}
+      <div class="rec-card">
+        <span class="priority-badge">Priority {{ rec.priority }} &bull; {{ rec.category }}</span>
+        <h3>{{ rec.title }}</h3>
+        <p>{{ rec.description }}</p>
+        <p class="outcome">Expected outcome: {{ rec.expected_outcome }}</p>
+        <div style="margin-top:8px;font-size:0.82rem;color:#555">
+          Confidence: {{ "%.0f%%"|format(rec.confidence_level * 100) }}
+        </div>
+        <div class="confidence-bar-wrap">
+          <div class="confidence-bar" style="width:{{ "%.0f%%"|format(rec.confidence_level * 100) }}"></div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+    <p>No recommendations available.</p>
+    {% endif %}
+  </section>
+
+  <!-- ROI Analysis -->
+  <section id="roi">
+    <h2>ROI Analysis</h2>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Time Savings (hours)</td><td>{{ "%.1f"|format(report.roi_analysis.time_savings_hours) }}</td></tr>
+        <tr><td>Time Savings (value)</td><td>${{ "{:,.0f}".format(report.roi_analysis.time_savings_value) }}</td></tr>
+        <tr><td>Revenue Impact – Top Quartile</td><td>${{ "{:,.0f}".format(report.roi_analysis.revenue_impact_top_quartile) }}</td></tr>
+        <tr><td>Revenue Impact – Bottom Quartile</td><td>${{ "{:,.0f}".format(report.roi_analysis.revenue_impact_bottom_quartile) }}</td></tr>
+        <tr><td>Decision Speed Improvement</td><td>{{ "%.1f%%"|format(report.roi_analysis.decision_speed_improvement) }}</td></tr>
+        <tr><td>Knowledge Loss Avoidance</td><td>${{ "{:,.0f}".format(report.roi_analysis.knowledge_loss_avoidance) }}</td></tr>
+        <tr><td>Total Benefits</td><td>${{ "{:,.0f}".format(report.roi_analysis.total_benefits) }}</td></tr>
+        <tr><td>System Costs</td><td>${{ "{:,.0f}".format(report.roi_analysis.system_costs) }}</td></tr>
+        <tr><td><strong>ROI Ratio</strong></td><td><strong>{{ "%.2f"|format(report.roi_analysis.roi_ratio) }}x</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  <p>Fortune 500 Knowledge Graph Analytics &bull; Report ID: {{ report.report_id }}</p>
+</footer>
+
+</body>
+</html>
