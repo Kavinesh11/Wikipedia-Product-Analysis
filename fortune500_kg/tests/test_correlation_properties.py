@@ -110,6 +110,9 @@ class TestProperty10CorrelationCoefficientCalculation:
     def test_invariant_to_linear_transform_of_y(self, xs, scale, shift):
         """corr(x, a*y + b) == corr(x, y) for a > 0."""
         assume(len(xs) >= 3)
+        # Skip degenerate cases where xs has no variance (constant series)
+        x_mean = sum(xs) / len(xs)
+        assume(sum((x - x_mean) ** 2 for x in xs) > 1e-10)
         ys = [x * 1.5 + 3.0 for x in xs]  # correlated series
         ys_transformed = [scale * y + shift for y in ys]
 

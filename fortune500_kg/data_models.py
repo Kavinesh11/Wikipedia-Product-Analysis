@@ -313,3 +313,77 @@ class ExecutiveReport:
     roi_analysis: ROIAnalysis
     pdf_path: Optional[str]
     html_path: Optional[str]
+
+# ---------------------------------------------------------------------------
+# Dashboard Service data models (Requirements 5, 6)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Visualization:
+    """Generic visualization object returned by DashboardService."""
+    chart_type: str          # 'bar', 'line', 'heatmap', etc.
+    title: str
+    data: List[Dict[str, Any]]
+    config: Dict[str, Any] = field(default_factory=dict)
+    filters_applied: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class NetworkNode:
+    """A node in a network visualization."""
+    node_id: str
+    label: str
+    metrics: Dict[str, float] = field(default_factory=dict)
+    cluster_id: Optional[int] = None
+
+
+@dataclass
+class NetworkEdge:
+    """An edge in a network visualization."""
+    source: str
+    target: str
+    relationship_type: str
+    weight: float = 1.0
+
+
+@dataclass
+class NetworkVisualization:
+    """Force-directed network graph visualization."""
+    nodes: List[NetworkNode]
+    edges: List[NetworkEdge]
+    layout: str = "force-directed"
+    filters_applied: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class BloomConfig:
+    """Configuration for Neo4j Bloom visualization overlays."""
+    node_size_metric: str        # Metric mapped to node size
+    node_color_metric: str       # Metric mapped to node color intensity
+    filters: Dict[str, Any] = field(default_factory=dict)
+    relationship_display: bool = True
+    edge_weight_display: bool = True
+
+
+# ---------------------------------------------------------------------------
+# Custom Query data models (Requirement 16)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class QueryResult:
+    """Result of a custom Cypher query execution."""
+    columns: List[str]
+    rows: List[Dict[str, Any]]
+    execution_time_ms: float
+    query: str
+    timestamp: datetime = field(default_factory=datetime.now)
+
+
+@dataclass
+class QueryAuditLog:
+    """Audit log entry for an executed Cypher query."""
+    query: str
+    timestamp: datetime
+    user_id: str
+    execution_time_ms: float
+    row_count: int

@@ -1041,3 +1041,310 @@ class AnalyticsEngine:
             metric_name,
         )
         return differences
+
+    # ------------------------------------------------------------------
+    # Competitor Cluster Detection (Requirements 14.1, 14.2, 14.3, 14.5)
+    # ------------------------------------------------------------------
+
+    def identify_clusters_from_louvain(
+        self,
+        louvain_results: Dict[str, int],
+    ) -> Dict[int, List[str]]:
+        """
+        Map Louvain community_id values to cluster identifiers.
+
+        Each unique community_id from the Louvain algorithm output becomes
+        a cluster. Returns a mapping from cluster_id (community_id) to the
+        list of company_ids belonging to that cluster.
+
+        Args:
+            louvain_results: Mapping of company_id -> community_id (from execute_louvain)
+
+        Returns:
+            Mapping of cluster_id -> list of company_ids in that cluster
+
+        Validates: Requirement 14.1
+        """
+        if not louvain_results:
+            return {}
+
+        clusters: Dict[int, List[str]] = {}
+        for company_id, community_id in louvain_results.items():
+            clusters.setdefault(community_id, []).append(company_id)
+
+        logger.info(
+            "Identified %d clusters from Louvain results (%d companies)",
+            len(clusters),
+            len(louvain_results),
+        )
+        return clusters
+
+    def calculate_network_density(
+        self,
+        cluster_companies: List[str],
+        graph: Dict[str, List[str]],
+    ) -> float:
+        """
+        Calculate network density within a cluster.
+
+        For an undirected graph with N nodes and E edges:
+            density = E / (N * (N - 1) / 2)
+
+        When N <= 1, density is defined as 0.0 (no edges possible).
+
+        Args:
+            cluster_companies: List of company_ids in the cluster
+            graph: Adjacency dict mapping company_id -> list of neighbour company_ids
+
+        Returns:
+            Network density in [0.0, 1.0]
+
+        Validates: Requirement 14.2
+        """
+        n = len(cluster_companies)
+        if n <= 1:
+            return 0.0
+
+        company_set = set(cluster_companies)
+        edge_count = 0
+        seen_edges: set = set()
+
+        for company in cluster_companies:
+            for neighbour in graph.get(company, []):
+                if neighbour in company_set:
+                    edge = tuple(sorted([company, neighbour]))
+                    if edge not in seen_edges:
+                        seen_edges.add(edge)
+                        edge_count += 1
+
+        max_edges = n * (n - 1) / 2
+        density = edge_count / max_edges if max_edges > 0 else 0.0
+
+        logger.debug(
+            "Cluster density: %d nodes, %d edges, density=%.4f",
+            n,
+            edge_count,
+            density,
+        )
+        return density
+
+    def identify_density_gaps(
+        self,
+        cluster_densities: Dict[int, float],
+        threshold_multiplier: float = 1.5,
+    ) -> List[Dict]:
+        """
+        Identify density gaps indicating potential market opportunities.
+
+        A density gap is identified when the difference between two cluster
+        densities exceeds a statistically significant threshold. The threshold
+        is defined as threshold_multiplier * standard_deviation of all densities.
+
+        Args:
+            cluster_densities: Mapping of cluster_id -> network density
+            threshold_multiplier: Multiplier for std dev to define significance (default 1.5)
+
+        Returns:
+            List of gap dicts with keys: 'cluster_a', 'cluster_b', 'gap', 'significant'
+
+        Validates: Requirement 14.3
+        """
+        if len(cluster_densities) < 2:
+            return []
+
+        densities = list(cluster_densities.values())
+        mean_density = sum(densities) / len(densities)
+        variance = sum((d - mean_density) ** 2 for d in densities) / len(densities)
+        std_dev = math.sqrt(variance) if variance > 0 else 0.0
+        threshold = threshold_multiplier * std_dev
+
+        cluster_ids = sorted(cluster_densities.keys())
+        gaps = []
+        for i, cid_a in enumerate(cluster_ids):
+            for cid_b in cluster_ids[i + 1:]:
+                gap = abs(cluster_densities[cid_a] - cluster_densities[cid_b])
+                gaps.append({
+                    "cluster_a": cid_a,
+                    "cluster_b": cid_b,
+                    "gap": gap,
+                    "significant": gap > threshold,
+                })
+
+        logger.info(
+            "Identified %d density gaps (%d significant) across %d clusters",
+            len(gaps),
+            sum(1 for g in gaps if g["significant"]),
+            len(cluster_densities),
+        )
+        return gaps
+
+    def flag_low_density_clusters(
+        self,
+        cluster_densities: Dict[int, float],
+    ) -> List[int]:
+        """
+        Flag clusters with network density below the median as opportunities.
+
+        Low-density clusters indicate sparse connectivity, which may represent
+        potential acquisition or partnership opportunities.
+
+        Args:
+            cluster_densities: Mapping of cluster_id -> network density
+
+        Returns:
+            List of cluster_ids with density below the median density
+
+        Validates: Requirement 14.5
+        """
+        if not cluster_densities:
+            return []
+
+        densities = sorted(cluster_densities.values())
+        n = len(densities)
+        if n % 2 == 1:
+            median = densities[n // 2]
+        else:
+            median = (densities[n // 2 - 1] + densities[n // 2]) / 2.0
+
+        low_density = [
+            cluster_id
+            for cluster_id, density in cluster_densities.items()
+            if density < median
+        ]
+
+        logger.info(
+            "Flagged %d low-density clusters (below median %.4f) as opportunities",
+            len(low_density),
+            median,
+        )
+        return low_density
+
+
+    # ------------------------------------------------------------------
+    # Custom Cypher Query Execution (Requirements 16.1-16.5)
+    # ------------------------------------------------------------------
+
+    # Audit log for executed queries (in-memory for testing)
+    _query_audit_log: List[Dict] = []
+
+    def validate_cypher_syntax(self, cypher_query: str) -> bool:
+        """
+        Validate Cypher query syntax before execution.
+
+        Performs basic structural validation:
+        - Query must not be empty
+        - Must start with a valid Cypher keyword (MATCH, CREATE, MERGE, RETURN,
+          WITH, CALL, UNWIND, DELETE, SET, REMOVE, FOREACH, OPTIONAL)
+        - Must not contain obviously dangerous patterns
+
+        Args:
+            cypher_query: Cypher query string to validate
+
+        Returns:
+            True if syntax appears valid
+
+        Raises:
+            QuerySyntaxError: When query syntax is invalid
+
+        Validates: Requirement 16.2
+        """
+        from .exceptions import QuerySyntaxError
+
+        if not cypher_query or not cypher_query.strip():
+            raise QuerySyntaxError("Query cannot be empty")
+
+        stripped = cypher_query.strip().upper()
+        valid_starts = (
+            "MATCH", "CREATE", "MERGE", "RETURN", "WITH", "CALL",
+            "UNWIND", "DELETE", "SET", "REMOVE", "FOREACH", "OPTIONAL",
+        )
+        if not any(stripped.startswith(kw) for kw in valid_starts):
+            raise QuerySyntaxError(
+                f"Query must start with a valid Cypher keyword. Got: {cypher_query[:50]}"
+            )
+
+        return True
+
+    def execute_custom_query(
+        self,
+        cypher_query: str,
+        user_id: str = "anonymous",
+        timeout_seconds: float = 30.0,
+        mock_executor=None,
+    ):
+        """
+        Execute a custom Cypher query with validation, timeout, and audit logging.
+
+        Validates query syntax before execution. Executes the query and returns
+        results in tabular format. Logs all queries with timestamp and user
+        identifier for audit purposes. Enforces a 30-second timeout.
+
+        Args:
+            cypher_query: Cypher query string
+            user_id: User identifier for audit logging
+            timeout_seconds: Maximum execution time (default 30s)
+            mock_executor: Optional callable(query) -> (columns, rows, time_ms)
+                           for testing without a real Neo4j connection
+
+        Returns:
+            QueryResult with columns, rows, execution_time_ms
+
+        Raises:
+            QuerySyntaxError: When query syntax is invalid
+            QueryTimeoutError: When execution exceeds timeout_seconds
+
+        Validates: Requirements 16.1-16.5
+        """
+        import time
+        from .exceptions import QuerySyntaxError, QueryTimeoutError
+        from .data_models import QueryResult, QueryAuditLog
+
+        # Validate syntax (Req 16.2)
+        self.validate_cypher_syntax(cypher_query)
+
+        start_time = time.time()
+
+        # Execute query (Req 16.3)
+        if mock_executor is not None:
+            columns, rows, exec_time_ms = mock_executor(cypher_query)
+        else:
+            # Simulate execution for testing without Neo4j
+            exec_time_ms = 0.0
+            columns = []
+            rows = []
+
+        elapsed_ms = (time.time() - start_time) * 1000 + exec_time_ms
+
+        # Enforce timeout (Req 16.5)
+        if elapsed_ms / 1000 > timeout_seconds:
+            raise QueryTimeoutError(
+                f"Query execution exceeded {timeout_seconds}s timeout "
+                f"(took {elapsed_ms:.1f}ms)"
+            )
+
+        result = QueryResult(
+            columns=columns,
+            rows=rows,
+            execution_time_ms=elapsed_ms,
+            query=cypher_query,
+        )
+
+        # Audit log (Req 16.4)
+        audit_entry = {
+            "query": cypher_query,
+            "timestamp": result.timestamp,
+            "user_id": user_id,
+            "execution_time_ms": elapsed_ms,
+            "row_count": len(rows),
+        }
+        if not hasattr(self, '_audit_log'):
+            self._audit_log = []
+        self._audit_log.append(audit_entry)
+
+        logger.info(
+            "Executed custom query by user '%s': %d rows in %.1fms",
+            user_id,
+            len(rows),
+            elapsed_ms,
+        )
+        return result

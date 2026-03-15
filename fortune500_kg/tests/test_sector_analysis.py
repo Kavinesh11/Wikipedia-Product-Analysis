@@ -24,6 +24,11 @@ def engine():
     return AnalyticsEngine(metrics_repo=MetricsRepository())
 
 
+@pytest.fixture
+def insight_gen():
+    return InsightGenerator()
+
+
 COMPANY_METRICS = {
     "C1": {"innovation_score": 8.0, "digital_maturity": 7.0},
     "C2": {"innovation_score": 6.0, "digital_maturity": 5.0},
@@ -67,4 +72,159 @@ class TestCalculateSectorAverages:
 
     def test_company_not_in_metrics_is_ignored(self, engine):
         sectors = {"C1": "Technology", "UNKNOWN": "Technology"}
-        result = engine.calculate_secto
+        result = engine.calculate_sector_averages(COMPANY_METRICS, sectors)
+        # Only C1 is in both dicts; UNKNOWN is ignored
+        assert result["Technology"]["innovation_score"] == pytest.approx(8.0)
+
+    def test_all_sectors_present(self, engine):
+        result = engine.calculate_sector_averages(COMPANY_METRICS, COMPANY_SECTORS)
+        assert "Technology" in result
+        assert "Finance" in result
+
+
+# ---------------------------------------------------------------------------
+# identify_sector_extrema
+# ---------------------------------------------------------------------------
+
+class TestIdentifySectorExtrema:
+
+    def test_identifies_highest_and_lowest(self, engine):
+        sector_avgs = {
+            "Technology": {"innovation_score": 7.0},
+            "Finance": {"innovation_score": 3.0},
+            "Healthcare": {"innovation_score": 5.0},
+        }
+        result = engine.identify_sector_extrema(sector_avgs, "innovation_score")
+        assert result["highest"] == "Technology"
+        assert result["lowest"] == "Finance"
+
+    def test_two_sectors(self, engine):
+        sector_avgs = {
+            "Technology": {"innovation_score": 7.0},
+            "Finance": {"innovation_score": 3.0},
+        }
+        result = engine.identify_sector_extrema(sector_avgs, "innovation_score")
+        assert result["highest"] == "Technology"
+        assert result["lowest"] == "Finance"
+
+    def test_missing_metric_returns_empty(self, engine):
+        sector_avgs = {"Technology": {"innovation_score": 7.0}}
+        result = engine.identify_sector_extrema(sector_avgs, "nonexistent_metric")
+        assert result == {}
+
+    def test_empty_sector_averages_returns_empty(self, engine):
+        result = engine.identify_sector_extrema({}, "innovation_score")
+        assert result == {}
+
+    def test_single_sector_returns_same_for_both(self, engine):
+        sector_avgs = {"Technology": {"innovation_score": 7.0}}
+        result = engine.identify_sector_extrema(sector_avgs, "innovation_score")
+        assert result["highest"] == "Technology"
+        assert result["lowest"] == "Technology"
+
+
+# ---------------------------------------------------------------------------
+# calculate_inter_sector_differences
+# ---------------------------------------------------------------------------
+
+class TestCalculateInterSectorDifferences:
+
+    def test_basic_percentage_difference(self, engine):
+        sector_avgs = {
+            "Technology": {"innovation_score": 8.0},
+            "Finance": {"innovation_score": 4.0},
+        }
+        result = engine.calculate_inter_sector_differences(sector_avgs, "innovation_score")
+        # Tech vs Finance: (8 - 4) / 4 * 100 = 100%
+        assert result["Technology_vs_Finance"] == pytest.approx(100.0)
+        # Finance vs Tech: (4 - 8) / 8 * 100 = -50%
+        assert result["Finance_vs_Technology"] == pytest.approx(-50.0)
+
+    def test_three_sectors_all_pairs(self, engine):
+        sector_avgs = {
+            "A": {"score": 10.0},
+            "B": {"score": 5.0},
+            "C": {"score": 2.0},
+        }
+        result = engine.calculate_inter_sector_differences(sector_avgs, "score")
+        # 3 sectors => 6 ordered pairs
+        assert len(result) == 6
+
+    def test_single_sector_returns_empty(self, engine):
+        sector_avgs = {"Technology": {"innovation_score": 7.0}}
+        result = engine.calculate_inter_sector_differences(sector_avgs, "innovation_score")
+        assert result == {}
+
+    def test_empty_returns_empty(self, engine):
+        result = engine.calculate_inter_sector_differences({}, "innovation_score")
+        assert result == {}
+
+    def test_zero_base_does_not_raise(self, engine):
+        sector_avgs = {
+            "Technology": {"score": 5.0},
+            "Finance": {"score": 0.0},
+        }
+        result = engine.calculate_inter_sector_differences(sector_avgs, "score")
+        # Finance_vs_Technology: (0 - 5) / 5 * 100 = -100%
+        assert result["Finance_vs_Technology"] == pytest.approx(-100.0)
+        # Technology_vs_Finance: base is 0, should return 0.0 (no division by zero)
+        assert result["Technology_vs_Finance"] == pytest.approx(0.0)
+
+
+# ---------------------------------------------------------------------------
+# InsightGenerator.identify_best_practices
+# ---------------------------------------------------------------------------
+
+class TestIdentifyBestPractices:
+
+    def test_high_performer_identified(self, insight_gen):
+        sector_avgs = {
+            "Technology": {"innovation_score": 8.0},
+            "Finance": {"innovation_score": 3.0},
+        }
+        practices = insight_gen.identify_best_practices(sector_avgs)
+        assert len(practices) >= 1
+        # Technology is above median, so it should be the source
+        assert any(p.sector == "Technology" for p in practices)
+
+    def test_best_practice_from_above_median_sector(self, insight_gen):
+        sector_avgs = {
+            "Tech": {"score": 9.0},
+            "Finance": {"score": 5.0},
+            "Healthcare": {"score": 3.0},
+        }
+        practices = insight_gen.identify_best_practices(sector_avgs, metric_names=["score"])
+        # Median of [3, 5, 9] = 5; Tech (9) > 5 is high performer
+        high_performer_sectors = {p.sector for p in practices}
+        assert "Tech" in high_performer_sectors
+
+    def test_best_practice_targets_below_median_sectors(self, insight_gen):
+        sector_avgs = {
+            "Tech": {"score": 9.0},
+            "Finance": {"score": 5.0},
+            "Healthcare": {"score": 3.0},
+        }
+        practices = insight_gen.identify_best_practices(sector_avgs, metric_names=["score"])
+        for p in practices:
+            # All target sectors should be at or below median
+            assert p.sector_avg > p.overall_median
+
+    def test_empty_sector_averages_returns_empty(self, insight_gen):
+        assert insight_gen.identify_best_practices({}) == []
+
+    def test_single_sector_returns_empty(self, insight_gen):
+        sector_avgs = {"Technology": {"innovation_score": 7.0}}
+        practices = insight_gen.identify_best_practices(sector_avgs)
+        assert practices == []
+
+    def test_best_practice_has_required_fields(self, insight_gen):
+        sector_avgs = {
+            "Technology": {"innovation_score": 8.0},
+            "Finance": {"innovation_score": 3.0},
+        }
+        practices = insight_gen.identify_best_practices(sector_avgs)
+        for p in practices:
+            assert p.sector
+            assert p.metric_name
+            assert p.description
+            assert isinstance(p.target_sectors, list)
