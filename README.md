@@ -2,6 +2,8 @@
 
 A production-ready business intelligence platform that transforms Wikipedia data into actionable business insights. The system leverages the Wikimedia Pageviews API, Wikipedia Edit History, and web crawling to provide real-time demand forecasting, brand reputation monitoring, competitive intelligence, and emerging trend detection.
 
+It also includes the **Fortune 500 Knowledge Graph Analytics** module — a standalone analytics engine that ingests Fortune 500 company data from Crawl4AI and GitHub APIs into a Neo4j knowledge graph, runs graph algorithms, trains ML models, and delivers executive dashboards and reports.
+
 ## Features
 
 ### Data Collection
@@ -274,6 +276,125 @@ if hype_score > 0.75:
 
 See [examples/](examples/) directory for complete working examples.
 
+---
+
+## Fortune 500 Knowledge Graph Analytics
+
+The `fortune500_kg/` module is a self-contained analytics system for Fortune 500 companies. It builds a Neo4j knowledge graph from Crawl4AI and GitHub data, runs graph algorithms, trains ML models, and generates executive reports and interactive dashboards.
+
+### Capabilities
+
+**Data Ingestion**
+- Crawl4AI parser for company nodes (name, sector, revenue rank, employee count)
+- GitHub API integration with exponential backoff rate limiting
+- Data quality validation with completeness reporting
+
+**Graph Analytics (Neo4j GDS)**
+- PageRank (max 20 iterations with convergence check)
+- Louvain community detection
+- Betweenness centrality with Ecosystem Centrality metric
+- Cross-sector comparative analysis and inter-sector percentage differences
+- Competitor cluster detection with network density gap analysis
+
+**Business Metrics**
+- Innovation Score: `(stars + forks) / employee_count`, normalised 0–10, decile ranked
+- Digital Maturity Index: `(stars + forks + contributors) / revenue_rank`
+- Pearson correlation analysis (p-value + 95% CI via Fisher z-transformation)
+- Quartile revenue growth comparison (top vs bottom quartile)
+- ROI calculations: time savings, revenue impact, decision speed, knowledge loss avoidance
+
+**ML Predictive Analytics**
+- Revenue growth prediction with confidence scores
+- High-confidence forecast flagging (confidence > 0.80)
+- Prediction validation with accuracy, RMSE, MAE metrics
+- High-growth low-rank company identification
+
+**Insight Generation**
+- Underperformer identification vs sector average
+- Investment recommendations for bottom quartile companies
+- Acquisition target identification (high centrality + low valuation)
+
+**Dashboards & Visualizations**
+- Leaderboard bar chart (Innovation Score vs Fortune 500 rank) with sector/year filters
+- Force-directed network graph with metric overlays (D3.js)
+- Time-series trend charts and sector centrality heatmaps
+- Neo4j Bloom overlay configuration (node size → Innovation Score, color → Ecosystem Centrality)
+
+**Export & Reporting**
+- Executive reports: MetricsSummary, Leaderboard, TrendsAnalysis, Recommendations, ROIAnalysis
+- PDF export (ReportLab) and interactive HTML export (Jinja2)
+- CSV and JSON metrics export with metadata
+- Conditional Tableau Server publishing and Power BI compatible export
+
+**Observability**
+- Performance monitoring: algorithm execution time, peak memory, ingestion throughput
+- Performance alerts when execution exceeds baseline by 50%
+- System health dashboard with CPU/memory/disk utilization
+- Centralized error handling with failure rate tracking and retry logic
+
+**Custom Queries**
+- Cypher query execution with syntax validation, 30-second timeout, and audit logging
+
+### Quick Start
+
+```bash
+cd fortune500_kg
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env with your Neo4j credentials and GitHub token
+python verify_setup.py
+```
+
+See [`fortune500_kg/QUICK_START.md`](fortune500_kg/QUICK_START.md) and [`fortune500_kg/INSTALLATION.md`](fortune500_kg/INSTALLATION.md) for full setup instructions.
+
+### Module Structure
+
+```
+fortune500_kg/
+├── analytics_engine.py          # Innovation Score, PageRank, Louvain, centrality,
+│                                #   correlation, sector analysis, cluster detection,
+│                                #   custom Cypher query execution
+├── data_ingestion_pipeline.py   # Crawl4AI parser, GitHub API, data quality validation
+├── data_models.py               # Dataclasses for all records and results
+├── dashboard_service.py         # Leaderboard, network graph, trend chart, heatmap,
+│                                #   Neo4j Bloom overlay configuration
+├── insight_generator.py         # Underperformers, investment recommendations,
+│                                #   acquisition targets, ROI calculations
+├── predictive_model.py          # ML training, revenue growth prediction, validation
+├── metrics_exporter.py          # CSV, JSON, Tableau, Power BI export
+├── performance_monitor.py       # Algorithm logging, alerts, throughput, health dashboard
+├── error_handler.py             # Retry decorator, failure rate tracking, error handling
+├── exceptions.py                # QuerySyntaxError, QueryTimeoutError, RateLimitError,
+│                                #   InsufficientDataError
+├── infrastructure/              # Neo4j schema scripts and Cypher migrations
+├── templates/                   # Jinja2 HTML report templates
+├── examples/                    # Usage examples
+└── tests/                       # 30 test modules (362 passing)
+    ├── test_innovation_score_properties.py
+    ├── test_graph_algorithm_properties.py
+    ├── test_correlation_properties.py
+    ├── test_business_correlation_properties.py
+    ├── test_sector_analysis_properties.py
+    ├── test_cluster_analysis_properties.py
+    ├── test_dashboard_properties.py
+    ├── test_bloom_properties.py
+    ├── test_custom_query_properties.py
+    ├── test_metrics_export_properties.py
+    ├── test_performance_properties.py
+    └── ... (unit tests for each module)
+```
+
+### Running Tests
+
+```bash
+cd fortune500_kg
+pytest                          # all tests
+pytest tests/ -m property       # property-based tests only (Hypothesis)
+pytest tests/ -v --tb=short     # verbose with short tracebacks
+```
+
+---
+
 ## Testing
 
 The system uses a dual testing strategy combining unit tests and property-based tests.
@@ -370,6 +491,20 @@ wikipedia-intelligence-system/
 │       ├── logging.py
 │       ├── api_client.py
 │       └── rate_limiter.py
+├── fortune500_kg/            # Fortune 500 Knowledge Graph Analytics module
+│   ├── analytics_engine.py
+│   ├── data_ingestion_pipeline.py
+│   ├── dashboard_service.py
+│   ├── insight_generator.py
+│   ├── predictive_model.py
+│   ├── metrics_exporter.py
+│   ├── performance_monitor.py
+│   ├── error_handler.py
+│   ├── exceptions.py
+│   ├── data_models.py
+│   ├── infrastructure/
+│   ├── templates/
+│   └── tests/
 ├── tests/
 │   ├── unit/               # Unit tests
 │   ├── property/           # Property-based tests
@@ -503,3 +638,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - Wikimedia Foundation for providing the Pageviews API
 - Wikipedia community for maintaining comprehensive article data
 - Open source libraries: Prophet, scikit-learn, NetworkX, Streamlit, Hypothesis
+- Fortune 500 KG module: Neo4j GDS, Crawl4AI, ReportLab, Jinja2, Hypothesis
