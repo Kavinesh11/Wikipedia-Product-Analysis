@@ -124,3 +124,36 @@ fortune500_kg/
 ```
 
 ---
+
+## Testing
+
+```bash
+pytest                          # all tests
+pytest tests/ -m property       # Hypothesis property-based tests only
+pytest fortune500_kg/tests/ -v  # Fortune 500 KG tests
+```
+
+## Project Structure
+
+```
+.
+├── fortune500_kg/              # Fortune 500 KG Analytics module
+├── wikipedia_health/           # Wikipedia Product Health analysis engine
+│   ├── analysis_system.py      # Main orchestrator
+│   ├── data_acquisition/       # Wikimedia API client
+│   ├── time_series/            # Changepoint detection, decomposition, forecasting
+│   ├── statistical_validation/ # Hypothesis testing, confidence intervals, effect sizes
+│   ├── causal_inference/       # ITS, DiD, Event Study, Synthetic Control
+│   └── visualization/          # Plotly dashboard components
+├── pages/
+│   ├── 1_Wikipedia_Intelligence.py   # Wikipedia Intelligence dashboard
+│   └── 2_Wikipedia_Product_Health.py # Product Health dashboard
+├── streamlit_app.py            # Streamlit Cloud entry point
+├── config/                     # YAML configuration files
+├── docs/                       # Extended documentation
+└── tests/                      # Root-level test suite
+```
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.
