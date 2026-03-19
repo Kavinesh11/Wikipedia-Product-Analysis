@@ -331,8 +331,7 @@ elif page == "Hype Detection":
 
     st.subheader("Hype Score Table")
     st.dataframe(
-        hype_filtered.sort_values("hype_score", ascending=False)
-        .style.background_gradient(subset=["hype_score"], cmap="YlOrRd"),
+        hype_filtered.sort_values("hype_score", ascending=False),
         use_container_width=True,
     )
 
@@ -521,8 +520,7 @@ elif page == "Forecasting":
         st.plotly_chart(fig, use_container_width=True)
     with col_r:
         st.dataframe(
-            summary_df.sort_values("growth_pct", ascending=False)
-            .style.background_gradient(subset=["growth_pct"], cmap="RdYlGn"),
+            summary_df.sort_values("growth_pct", ascending=False),
             use_container_width=True,
         )
 
@@ -611,7 +609,6 @@ elif page == "Knowledge Graph":
 
     st.subheader("Centrality Table")
     st.dataframe(
-        kg_filtered.sort_values("pagerank", ascending=False)
-        .style.background_gradient(subset=["pagerank", "betweenness"], cmap="Purples"),
+        kg_filtered.sort_values("pagerank", ascending=False),
         use_container_width=True,
     )

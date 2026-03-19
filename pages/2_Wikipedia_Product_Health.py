@@ -419,8 +419,7 @@ elif page == "Changepoint Detection":
 
     st.subheader("Changepoint Details")
     st.dataframe(cp_df[["date", "platform", "cause", "direction", "magnitude", "confidence"]]
-                 .sort_values("date")
-                 .style.background_gradient(subset=["confidence"], cmap="RdYlGn"),
+                 .sort_values("date"),
                  use_container_width=True)
 
 
@@ -491,8 +490,7 @@ elif page == "Causal Analysis":
     st.subheader("Full Causal Effects Table")
     st.dataframe(
         causal_df[["event", "platform", "method", "effect_size",
-                   "ci_lower", "ci_upper", "p_value", "significant"]]
-        .style.background_gradient(subset=["effect_size"], cmap="RdYlGn"),
+                   "ci_lower", "ci_upper", "p_value", "significant"]],
         use_container_width=True,
     )
 

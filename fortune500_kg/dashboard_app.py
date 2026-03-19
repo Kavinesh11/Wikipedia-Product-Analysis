@@ -238,7 +238,7 @@ elif page == "Leaderboard":
             "ecosystem_centrality": "Centrality",
             "revenue_rank": "F500 Rank",
             "github_stars": "Stars",
-        }).style.background_gradient(subset=["Innovation Score"], cmap="Blues"),
+        }),
         use_container_width=True, height=400,
     )
 
@@ -317,7 +317,7 @@ elif page == "Sector Analysis":
         "avg_innovation": "Avg Innovation", "avg_dmi": "Avg DMI",
         "avg_centrality": "Avg Centrality", "avg_pagerank": "Avg PageRank",
         "company_count": "# Companies",
-    }).style.background_gradient(subset=["Avg Innovation"], cmap="Greens"),
+    }),
         use_container_width=True)
 
 
@@ -500,7 +500,7 @@ elif page == "Predictions":
             "confidence_score": "Confidence",
             "high_confidence": "High Conf.",
             "revenue_rank": "F500 Rank",
-        }).style.background_gradient(subset=["Predicted Growth (%)"], cmap="RdYlGn"),
+        }),
         use_container_width=True, height=350,
     )
 
