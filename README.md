@@ -80,3 +80,47 @@ Analyses 2 years of platform-level traffic across desktop, mobile-web, and mobil
 **Risk thresholds:** HHI > 2500 = high concentration · mobile share > 70% = high dependency
 
 ---
+
+## Fortune 500 KG Analytics (`fortune500_kg/`)
+
+Ingests Fortune 500 company data into a Neo4j knowledge graph, runs graph algorithms, trains ML models, and surfaces executive insights.
+
+### Dashboard Pages (`fortune500_kg/dashboard_app.py`)
+
+| Page | What it shows |
+|---|---|
+| Overview | KPI row, innovation score distribution, digital maturity by sector, trend line |
+| Leaderboard | Top companies by innovation score, decile distribution, innovation vs revenue rank scatter |
+| Sector Analysis | Cross-sector bar/radar charts, trend lines, heatmap, inter-sector % differences |
+| Network & Clusters | Louvain communities, network density, force-directed graph (top 60 by centrality) |
+| Predictions | Predicted vs actual revenue growth, confidence distribution, high-growth low-rank table |
+| ROI & Insights | Interactive ROI calculator, waterfall chart, underperformers, acquisition targets |
+| Custom Query | Cypher query interface with syntax validation and audit logging |
+
+### Core Metrics
+
+- **Innovation Score** — `(stars + forks) / employee_count`, normalised 0–10, decile ranked
+- **Digital Maturity Index** — `(stars + forks + contributors) / revenue_rank`
+- **Ecosystem Centrality** — betweenness + PageRank composite
+- **Acquisition targets** — high centrality + below-median revenue rank
+
+### Module Structure
+
+```
+fortune500_kg/
+├── dashboard_app.py          # Streamlit multi-page dashboard
+├── analytics_engine.py       # Innovation Score, PageRank, Louvain, correlation, sector analysis
+├── data_ingestion_pipeline.py# Crawl4AI parser + GitHub API with rate limiting
+├── data_models.py            # All dataclasses (Company, MetricRecord, ExecutiveReport, …)
+├── dashboard_service.py      # Leaderboard, network graph, heatmap, Bloom overlay
+├── insight_generator.py      # Underperformers, recommendations, acquisition targets, ROI
+├── predictive_model.py       # ML revenue growth prediction + validation
+├── metrics_exporter.py       # CSV / JSON / Tableau / Power BI export
+├── performance_monitor.py    # Execution time, memory, throughput, health dashboard
+├── error_handler.py          # Retry decorator, failure rate tracking
+├── infrastructure/           # Neo4j schema + Cypher migration scripts
+├── templates/                # Jinja2 HTML report templates
+└── tests/                    # 30 test modules, 362 passing (pytest + Hypothesis)
+```
+
+---
