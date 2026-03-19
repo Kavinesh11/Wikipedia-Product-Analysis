@@ -15,7 +15,7 @@ import streamlit as st
 # ── page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Fortune 500 KG Analytics",
-    page_icon="📊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -132,7 +132,7 @@ def kpi(col, label, value, delta=None, fmt="{:.2f}"):
 # PAGE: OVERVIEW
 # ══════════════════════════════════════════════════════════════════════════════
 if page == "Overview":
-    st.title("📊 Fortune 500 Knowledge Graph Analytics")
+    st.title(" Fortune 500 Knowledge Graph Analytics")
     st.caption(f"Demo dataset · {len(df)} companies · {len(selected_sectors)} sectors")
     st.markdown("---")
 
@@ -182,7 +182,7 @@ if page == "Overview":
 # PAGE: LEADERBOARD
 # ══════════════════════════════════════════════════════════════════════════════
 elif page == "Leaderboard":
-    st.title("🏆 Innovation Score Leaderboard")
+    st.title("Innovation Score Leaderboard")
     st.caption("Ranked by normalised Innovation Score (0–10)")
     st.markdown("---")
 
@@ -247,7 +247,7 @@ elif page == "Leaderboard":
 # PAGE: SECTOR ANALYSIS
 # ══════════════════════════════════════════════════════════════════════════════
 elif page == "Sector Analysis":
-    st.title("🏭 Cross-Sector Comparative Analysis")
+    st.title(" Cross-Sector Comparative Analysis")
     st.markdown("---")
 
     sector_agg = df.groupby("sector").agg(
@@ -325,7 +325,7 @@ elif page == "Sector Analysis":
 # PAGE: NETWORK & CLUSTERS
 # ══════════════════════════════════════════════════════════════════════════════
 elif page == "Network & Clusters":
-    st.title("🕸️ Network Graph & Cluster Detection")
+    st.title(" Network Graph & Cluster Detection")
     st.markdown("---")
 
     c1, c2 = st.columns(2)
@@ -427,7 +427,7 @@ elif page == "Network & Clusters":
 # PAGE: PREDICTIONS
 # ══════════════════════════════════════════════════════════════════════════════
 elif page == "Predictions":
-    st.title("🤖 ML Revenue Growth Predictions")
+    st.title("ML Revenue Growth Predictions")
     st.markdown("---")
 
     c1, c2, c3, c4 = st.columns(4)
@@ -509,7 +509,7 @@ elif page == "Predictions":
 # PAGE: ROI & INSIGHTS
 # ══════════════════════════════════════════════════════════════════════════════
 elif page == "ROI & Insights":
-    st.title("💡 ROI & Business Insights")
+    st.title("ROI & Business Insights")
     st.markdown("---")
 
     # ── ROI calculator ────────────────────────────────────────────────────────
@@ -596,7 +596,7 @@ elif page == "ROI & Insights":
 # PAGE: CUSTOM QUERY
 # ══════════════════════════════════════════════════════════════════════════════
 elif page == "Custom Query":
-    st.title("🔍 Custom Cypher Query Explorer")
+    st.title("Custom Cypher Query Explorer")
     st.markdown("---")
     st.info("This page simulates the custom Cypher query interface. "
             "In production it connects to your Neo4j instance.")

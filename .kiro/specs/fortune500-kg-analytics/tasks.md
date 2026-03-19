@@ -27,7 +27,7 @@ The implementation follows a layered approach:
   - **Property 1: Crawl4AI Data Parsing Completeness**
   - **Validates: Requirements 1.1**
 
-- [-] 2. Implement data ingestion pipeline core functionality
+- [x] 2. Implement data ingestion pipeline core functionality
   - [x] 2.1 Create DataIngestionPipeline class with Crawl4AI parser
     - Implement ingest_crawl4ai_data() method to parse company data
     - Create company nodes in Neo4j with attributes (name, sector, revenue_rank, employee_count)
@@ -46,7 +46,7 @@ The implementation follows a layered approach:
     - Queue failed requests for retry
     - _Requirements: 1.2, 1.5_
   
-  - [-] 2.4 Write property tests for GitHub metrics and rate limiting
+  - [x] 2.4 Write property tests for GitHub metrics and rate limiting
     - **Property 2: GitHub Metrics Retrieval Accuracy**
     - **Property 5: Rate Limit Exponential Backoff**
     - **Validates: Requirements 1.2, 1.5**
@@ -58,7 +58,7 @@ The implementation follows a layered approach:
     - Identify missing GitHub organizations, employee counts, revenue ranks
     - _Requirements: 1.4, 15.1, 15.2, 15.3, 15.4, 15.5_
   
-  - [ ] 2.6 Write property tests for ingestion logging and validation
+  - [x] 2.6 Write property tests for ingestion logging and validation
     - **Property 3: Required Company Attributes Persistence**
     - **Property 4: Ingestion Logging Accuracy**
     - **Property 72: Fortune 500 Completeness Validation**
