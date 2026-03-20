@@ -140,7 +140,7 @@ def gen_seasonality() -> pd.DataFrame:
 
 
 # -- sidebar -------------------------------------------------------------------
-st.sidebar.image("https://img.icons8.com/color/96/health-checkup.png", width=60)
+st.sidebar.image("https://img.icons8.com/color/96/wikipedia.png", width=60)
 st.sidebar.title("Wikipedia Product Health")
 st.sidebar.markdown("---")
 
