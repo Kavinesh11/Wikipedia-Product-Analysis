@@ -1,4 +1,4 @@
-"""Wikipedia Intelligence Platform — Streamlit Dashboard (demo data)."""
+"""Wikipedia Intelligence Platform — Streamlit Dashboard """
 
 import math
 import random
@@ -12,7 +12,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Wikipedia Intelligence",
-    page_icon="📡",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -177,7 +177,7 @@ def kpi(col, label, value, delta=None, fmt="{:.3f}"):
 
 # -- OVERVIEW ------------------------------------------------------------------
 if page == "Overview":
-    st.title("📡 Wikipedia Intelligence Platform")
+    st.title("Wikipedia Intelligence Platform")
     st.caption(f"Demo dataset · {len(selected_articles)} articles monitored")
     st.markdown("---")
     c1, c2, c3, c4, c5 = st.columns(5)
@@ -218,7 +218,7 @@ if page == "Overview":
 
 # -- PAGEVIEWS ANALYTICS -------------------------------------------------------
 elif page == "Pageviews Analytics":
-    st.title("📊 Pageviews Analytics")
+    st.title("Pageviews Analytics")
     st.caption("Daily pageview breakdown by article and device type")
     st.markdown("---")
 
@@ -279,7 +279,7 @@ elif page == "Pageviews Analytics":
 
 # -- HYPE DETECTION ------------------------------------------------------------
 elif page == "Hype Detection":
-    st.title("🔥 Hype Detection")
+    st.title("Hype Detection")
     st.caption("Composite hype score = 0.5×view_velocity + 0.3×edit_growth + 0.2×content_expansion")
     st.markdown("---")
 
@@ -338,7 +338,7 @@ elif page == "Hype Detection":
 
 # -- REPUTATION MONITOR --------------------------------------------------------
 elif page == "Reputation Monitor":
-    st.title("🛡️ Reputation Monitor")
+    st.title("Reputation Monitor")
     st.caption("Edit velocity, vandalism rate, and anonymous edit percentage")
     st.markdown("---")
 
@@ -397,7 +397,7 @@ elif page == "Reputation Monitor":
 
 # -- TOPIC CLUSTERS ------------------------------------------------------------
 elif page == "Topic Clusters":
-    st.title("🗂️ Topic Clusters")
+    st.title("Topic Clusters")
     st.caption("Semantic clusters with growth rates and CAGR")
     st.markdown("---")
 
@@ -457,7 +457,7 @@ elif page == "Topic Clusters":
 
 # -- FORECASTING ---------------------------------------------------------------
 elif page == "Forecasting":
-    st.title("📈 Forecasting")
+    st.title("Forecasting")
     st.caption("90-day pageview forecast with prediction intervals")
     st.markdown("---")
 
@@ -527,7 +527,7 @@ elif page == "Forecasting":
 
 # -- KNOWLEDGE GRAPH -----------------------------------------------------------
 elif page == "Knowledge Graph":
-    st.title("🕸️ Knowledge Graph")
+    st.title("Knowledge Graph")
     st.caption("Article centrality, community detection, and network topology")
     st.markdown("---")
 
