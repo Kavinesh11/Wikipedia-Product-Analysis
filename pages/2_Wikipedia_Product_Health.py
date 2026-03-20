@@ -1,4 +1,4 @@
-"""Wikipedia Product Health Analysis — Streamlit Dashboard (demo data)."""
+"""Wikipedia Product Health Analysis — Streamlit Dashboard """
 
 import random
 from datetime import datetime, timedelta
@@ -12,7 +12,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Wikipedia Product Health",
-    page_icon="🏥",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -173,7 +173,7 @@ def kpi(col, label, value, delta=None, fmt="{:,.0f}"):
 
 # -- OVERVIEW ------------------------------------------------------------------
 if page == "Overview":
-    st.title("🏥 Wikipedia Product Health Analysis")
+    st.title("Wikipedia Product Health Analysis")
     st.caption(f"Demo dataset · {date_range} · {len(platform_filter)} platform(s)")
     st.markdown("---")
 
@@ -228,7 +228,7 @@ if page == "Overview":
 
 # -- TRAFFIC TRENDS ------------------------------------------------------------
 elif page == "Traffic Trends":
-    st.title("📉 Traffic Trends")
+    st.title("Traffic Trends")
     st.caption("Long-term trend decomposition and growth analysis")
     st.markdown("---")
 
@@ -290,7 +290,7 @@ elif page == "Traffic Trends":
 
 # -- PLATFORM RISK -------------------------------------------------------------
 elif page == "Platform Risk":
-    st.title("⚠️ Platform Risk Assessment")
+    st.title("Platform Risk Assessment")
     st.caption("HHI concentration, CAGR, volatility, and mobile dependency analysis")
     st.markdown("---")
 
@@ -360,7 +360,7 @@ elif page == "Platform Risk":
 
 # -- CHANGEPOINT DETECTION -----------------------------------------------------
 elif page == "Changepoint Detection":
-    st.title("🔍 Changepoint Detection")
+    st.title("Changepoint Detection")
     st.caption("Structural breaks detected via PELT algorithm with Chow test significance")
     st.markdown("---")
 
@@ -425,7 +425,7 @@ elif page == "Changepoint Detection":
 
 # -- CAUSAL ANALYSIS -----------------------------------------------------------
 elif page == "Causal Analysis":
-    st.title("🔬 Causal Analysis")
+    st.title("Causal Analysis")
     st.caption("Interrupted Time Series (ITS), Difference-in-Differences (DiD), and Event Study results")
     st.markdown("---")
 
@@ -497,7 +497,7 @@ elif page == "Causal Analysis":
 
 # -- SEASONALITY ---------------------------------------------------------------
 elif page == "Seasonality":
-    st.title("📅 Seasonality Analysis")
+    st.title("Seasonality Analysis")
     st.caption("Weekly and annual seasonal patterns in pageviews and editor activity")
     st.markdown("---")
 
@@ -559,7 +559,7 @@ elif page == "Seasonality":
 
 # -- FORECASTING ---------------------------------------------------------------
 elif page == "Forecasting":
-    st.title("📈 Forecasting")
+    st.title("Forecasting")
     st.caption("90-day ensemble forecast with prediction intervals per platform")
     st.markdown("---")
 
