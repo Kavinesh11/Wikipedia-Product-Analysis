@@ -2,8 +2,11 @@
   
 # Wikipedia Intelligence & Fortune 500 Analytics
 
-A unified Streamlit analytics platform with three modules:
+![Wiki](docs/BA.png)
+
 </div>
+A unified Streamlit analytics platform with three modules:
+
 
 | Module | Description |
 |---|---|
