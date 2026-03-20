@@ -97,7 +97,7 @@ def generate_sector_trend(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ── sidebar ───────────────────────────────────────────────────────────────────
-st.sidebar.image("https://img.icons8.com/color/96/graph.png", width=60)
+st.sidebar.image("https://img.icons8.com/color/96/wikipedia.png", width=60)
 st.sidebar.title("Fortune 500 KG Analytics")
 st.sidebar.markdown("---")
 
