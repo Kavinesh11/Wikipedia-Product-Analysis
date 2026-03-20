@@ -1,6 +1,9 @@
+<div align="center">
+  
 # Wikipedia Intelligence & Fortune 500 Analytics
 
 A unified Streamlit analytics platform with three modules:
+</div>
 
 | Module | Description |
 |---|---|
@@ -8,7 +11,9 @@ A unified Streamlit analytics platform with three modules:
 | **Wikipedia Product Health** | Traffic trends, platform risk, changepoint detection, causal analysis |
 | **Fortune 500 KG Analytics** | Knowledge graph, innovation scoring, ML predictions, ROI insights |
 
-**Live demo:** [streamlit.io app](https://wikipedia-product-analysis.streamlit.app)
+**Live demo:** [streamlit.io app 1](https://wikipedia-health.streamlit.app/)
+[streamlit.io app 2](https://wiki-intelligence.streamlit.app/)
+[streamlit.io app 3](https://fortune500wiki.streamlit.app/)
 
 ---
 
